@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.012s</div>
+<div class="counter">0.008s</div>
 <p>duration</p>
 </div>
 </td>
@@ -76,14 +76,14 @@
 <div id="tab0" class="tab">
 <h2>Failed tests</h2>
 <div class="test">
-<a name="contextLoads()"></a>
-<h3 class="failures">contextLoads()</h3>
+<a name="shouldReturnAFundraisingPost()"></a>
+<h3 class="failures">shouldReturnAFundraisingPost()</h3>
 <span class="code">
-<pre>java.lang.IllegalStateException: Failed to load ApplicationContext for [WebMergedContextConfiguration@20f6f88c testClass = com.vidclick.API.VidclickApplicationTests, locations = [], classes = [com.vidclick.API.VidclickApplication], contextInitializerClasses = [], activeProfiles = [], propertySourceLocations = [], propertySourceProperties = [&quot;org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true&quot;], contextCustomizers = [org.springframework.boot.test.autoconfigure.actuate.observability.ObservabilityContextCustomizerFactory$DisableObservabilityContextCustomizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@1a20270e, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@19e4fcac, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@21fd5faa, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@40db2a24, org.springframework.boot.test.context.SpringBootTestAnnotation@20f29a2e], resourceBasePath = &quot;src/main/webapp&quot;, contextLoader = org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+<pre>java.lang.IllegalStateException: Failed to load ApplicationContext for [WebMergedContextConfiguration@427ae189 testClass = com.vidclick.API.VidclickApplicationTests, locations = [], classes = [com.vidclick.API.VidclickApplication], contextInitializerClasses = [], activeProfiles = [], propertySourceLocations = [], propertySourceProperties = [&quot;org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true&quot;, &quot;server.port=0&quot;], contextCustomizers = [org.springframework.boot.test.autoconfigure.actuate.observability.ObservabilityContextCustomizerFactory$DisableObservabilityContextCustomizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@6eb2384f, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@12f9af83, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@10cf09e8, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@6e4566f1, org.springframework.boot.test.context.SpringBootTestAnnotation@117a9a2b], resourceBasePath = &quot;src/main/webapp&quot;, contextLoader = org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
 	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:143)
 	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:127)
-	at org.springframework.test.context.web.ServletTestExecutionListener.setUpRequestContextIfNecessary(ServletTestExecutionListener.java:191)
-	at org.springframework.test.context.web.ServletTestExecutionListener.prepareTestInstance(ServletTestExecutionListener.java:130)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:141)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:97)
 	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:241)
 	at org.springframework.test.context.junit.jupiter.SpringExtension.postProcessTestInstance(SpringExtension.java:138)
 	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$10(ClassBasedTestDescriptor.java:377)
@@ -180,6 +180,7 @@ Caused by: org.springframework.beans.factory.support.BeanDefinitionOverrideExcep
 	at app//org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:115)
 	at app//org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:771)
 	at app//org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:589)
+	at app//org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
 	at app//org.springframework.boot.SpringApplication.refresh(SpringApplication.java:734)
 	at app//org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:436)
 	at app//org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
@@ -208,8 +209,8 @@ Caused by: org.springframework.beans.factory.support.BeanDefinitionOverrideExcep
 </tr>
 </thead>
 <tr>
-<td class="failures">contextLoads()</td>
-<td class="failures">0.012s</td>
+<td class="failures">shouldReturnAFundraisingPost()</td>
+<td class="failures">0.008s</td>
 <td class="failures">failed</td>
 </tr>
 </table>
@@ -217,8 +218,8 @@ Caused by: org.springframework.beans.factory.support.BeanDefinitionOverrideExcep
 <div id="tab2" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>17:36:09.450 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.vidclick.API.VidclickApplicationTests]: VidclickApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-17:36:09.659 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.vidclick.API.VidclickApplication for test class com.vidclick.API.VidclickApplicationTests
+<pre>10:15:11.047 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.vidclick.API.VidclickApplicationTests]: VidclickApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+10:15:11.227 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.vidclick.API.VidclickApplication for test class com.vidclick.API.VidclickApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -228,18 +229,18 @@ Caused by: org.springframework.beans.factory.support.BeanDefinitionOverrideExcep
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.1.2)
 
-2023-07-29T17:36:10.595+03:00  INFO 324807 --- [    Test worker] c.vidclick.API.VidclickApplicationTests  : Starting VidclickApplicationTests using Java 20.0.1 with PID 324807 (started by godzilla in /home/godzilla/Documents/VidClick-API)
-2023-07-29T17:36:10.601+03:00  INFO 324807 --- [    Test worker] c.vidclick.API.VidclickApplicationTests  : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2023-07-29T17:36:12.095+03:00  INFO 324807 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2023-07-29T17:36:12.100+03:00  INFO 324807 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2023-07-29T17:36:12.230+03:00  INFO 324807 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 110 ms. Found 2 JPA repository interfaces.
-2023-07-29T17:36:12.308+03:00  INFO 324807 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
-2023-07-29T17:36:12.308+03:00  INFO 324807 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
-2023-07-29T17:36:12.322+03:00  WARN 324807 --- [    Test worker] o.s.w.c.s.GenericWebApplicationContext   : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'postRepository' defined in com.vidclick.API.repositories.PostRepository defined in @EnableMongoRepositories declared on MongoRepositoriesRegistrar.EnableMongoRepositoriesConfiguration: Cannot register bean definition [Root bean: class [org.springframework.data.mongodb.repository.support.MongoRepositoryFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodNames=null; destroyMethodNames=null; defined in com.vidclick.API.repositories.PostRepository defined in @EnableMongoRepositories declared on MongoRepositoriesRegistrar.EnableMongoRepositoriesConfiguration] for bean 'postRepository' since there is already [Root bean: class [org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodNames=null; destroyMethodNames=null; defined in com.vidclick.API.repositories.PostRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration] bound.
-2023-07-29T17:36:12.362+03:00  INFO 324807 --- [    Test worker] .s.b.a.l.ConditionEvaluationReportLogger : 
+2023-08-01T10:15:11.965+03:00  INFO 357688 --- [    Test worker] c.vidclick.API.VidclickApplicationTests  : Starting VidclickApplicationTests using Java 20.0.1 with PID 357688 (started by godzilla in /home/godzilla/Documents/VidClick-API)
+2023-08-01T10:15:11.968+03:00  INFO 357688 --- [    Test worker] c.vidclick.API.VidclickApplicationTests  : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2023-08-01T10:15:13.053+03:00  INFO 357688 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2023-08-01T10:15:13.056+03:00  INFO 357688 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-08-01T10:15:13.172+03:00  INFO 357688 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 99 ms. Found 2 JPA repository interfaces.
+2023-08-01T10:15:13.244+03:00  INFO 357688 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2023-08-01T10:15:13.245+03:00  INFO 357688 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2023-08-01T10:15:13.256+03:00  WARN 357688 --- [    Test worker] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'postRepository' defined in com.vidclick.API.repositories.PostRepository defined in @EnableMongoRepositories declared on MongoRepositoriesRegistrar.EnableMongoRepositoriesConfiguration: Cannot register bean definition [Root bean: class [org.springframework.data.mongodb.repository.support.MongoRepositoryFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodNames=null; destroyMethodNames=null; defined in com.vidclick.API.repositories.PostRepository defined in @EnableMongoRepositories declared on MongoRepositoriesRegistrar.EnableMongoRepositoriesConfiguration] for bean 'postRepository' since there is already [Root bean: class [org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodNames=null; destroyMethodNames=null; defined in com.vidclick.API.repositories.PostRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration] bound.
+2023-08-01T10:15:13.288+03:00  INFO 357688 --- [    Test worker] .s.b.a.l.ConditionEvaluationReportLogger : 
 
 Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
-2023-07-29T17:36:12.408+03:00 ERROR 324807 --- [    Test worker] o.s.b.d.LoggingFailureAnalysisReporter   : 
+2023-08-01T10:15:13.321+03:00 ERROR 357688 --- [    Test worker] o.s.b.d.LoggingFailureAnalysisReporter   : 
 
 ***************************
 APPLICATION FAILED TO START
@@ -253,13 +254,13 @@ Action:
 
 Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
 
-2023-07-29T17:36:12.422+03:00 ERROR 324807 --- [    Test worker] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener] to prepare test instance [com.vidclick.API.VidclickApplicationTests@4277127c]
+2023-08-01T10:15:13.333+03:00 ERROR 357688 --- [    Test worker] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener] to prepare test instance [com.vidclick.API.VidclickApplicationTests@16a9eb2e]
 
-java.lang.IllegalStateException: Failed to load ApplicationContext for [WebMergedContextConfiguration@20f6f88c testClass = com.vidclick.API.VidclickApplicationTests, locations = [], classes = [com.vidclick.API.VidclickApplication], contextInitializerClasses = [], activeProfiles = [], propertySourceLocations = [], propertySourceProperties = [&quot;org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true&quot;], contextCustomizers = [org.springframework.boot.test.autoconfigure.actuate.observability.ObservabilityContextCustomizerFactory$DisableObservabilityContextCustomizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@1a20270e, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@19e4fcac, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@21fd5faa, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@40db2a24, org.springframework.boot.test.context.SpringBootTestAnnotation@20f29a2e], resourceBasePath = &quot;src/main/webapp&quot;, contextLoader = org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+java.lang.IllegalStateException: Failed to load ApplicationContext for [WebMergedContextConfiguration@427ae189 testClass = com.vidclick.API.VidclickApplicationTests, locations = [], classes = [com.vidclick.API.VidclickApplication], contextInitializerClasses = [], activeProfiles = [], propertySourceLocations = [], propertySourceProperties = [&quot;org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true&quot;, &quot;server.port=0&quot;], contextCustomizers = [org.springframework.boot.test.autoconfigure.actuate.observability.ObservabilityContextCustomizerFactory$DisableObservabilityContextCustomizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@6eb2384f, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@12f9af83, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@10cf09e8, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@6e4566f1, org.springframework.boot.test.context.SpringBootTestAnnotation@117a9a2b], resourceBasePath = &quot;src/main/webapp&quot;, contextLoader = org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
 	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:143) ~[spring-test-6.0.11.jar:6.0.11]
 	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:127) ~[spring-test-6.0.11.jar:6.0.11]
-	at org.springframework.test.context.web.ServletTestExecutionListener.setUpRequestContextIfNecessary(ServletTestExecutionListener.java:191) ~[spring-test-6.0.11.jar:6.0.11]
-	at org.springframework.test.context.web.ServletTestExecutionListener.prepareTestInstance(ServletTestExecutionListener.java:130) ~[spring-test-6.0.11.jar:6.0.11]
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:141) ~[spring-test-6.0.11.jar:6.0.11]
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:97) ~[spring-test-6.0.11.jar:6.0.11]
 	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:241) ~[spring-test-6.0.11.jar:6.0.11]
 	at org.springframework.test.context.junit.jupiter.SpringExtension.postProcessTestInstance(SpringExtension.java:138) ~[spring-test-6.0.11.jar:6.0.11]
 	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$10(ClassBasedTestDescriptor.java:377) ~[junit-jupiter-engine-5.9.3.jar:5.9.3]
@@ -356,6 +357,7 @@ Caused by: org.springframework.beans.factory.support.BeanDefinitionOverrideExcep
 	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:115) ~[spring-context-6.0.11.jar:6.0.11]
 	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:771) ~[spring-context-6.0.11.jar:6.0.11]
 	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:589) ~[spring-context-6.0.11.jar:6.0.11]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.1.2.jar:3.1.2]
 	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:734) ~[spring-boot-3.1.2.jar:3.1.2]
 	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:436) ~[spring-boot-3.1.2.jar:3.1.2]
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312) ~[spring-boot-3.1.2.jar:3.1.2]
@@ -420,7 +422,7 @@ Unconditional classes:
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 8.2.1</a> at Jul 29, 2023, 5:36:12 PM</p>
+<a href="http://www.gradle.org">Gradle 8.2.1</a> at Aug 1, 2023, 10:15:13 AM</p>
 </div>
 </div>
 </body>
