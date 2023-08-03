@@ -1,7 +1,7 @@
-package com.api.vidclick.vidclick.controllers;
+package com.api.vidclick.packages.controllers;
 
-import com.api.vidclick.vidclick.models.User;
-import com.api.vidclick.vidclick.repository.UserRepository;
+import com.api.vidclick.packages.models.User;
+import com.api.vidclick.packages.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

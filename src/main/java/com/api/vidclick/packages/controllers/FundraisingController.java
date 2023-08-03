@@ -1,7 +1,7 @@
-package com.api.vidclick.vidclick.controllers;
+package com.api.vidclick.packages.controllers;
 
-import com.api.vidclick.vidclick.models.FundraisingOffer;
-import com.api.vidclick.vidclick.repository.FundraisingOfferRepository;
+import com.api.vidclick.packages.models.FundraisingOffer;
+import com.api.vidclick.packages.repository.FundraisingOfferRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

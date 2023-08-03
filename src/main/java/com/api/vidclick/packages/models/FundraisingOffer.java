@@ -1,4 +1,4 @@
-package com.api.vidclick.vidclick.models;
+package com.api.vidclick.packages.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
