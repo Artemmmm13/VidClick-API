@@ -1,12 +1,14 @@
 package com.api.vidclick.repositories;
 
 import com.api.vidclick.models.FundraisingOffer;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
-public interface FundraisingOfferRepository extends MongoRepository<FundraisingOffer, Long>, CrudRepository<FundraisingOffer, Long> {
-    @Override
-    Optional<FundraisingOffer> findById(Long id);
+@Repository
+public interface FundraisingOfferRepository {
 }
