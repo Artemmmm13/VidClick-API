@@ -29,6 +29,8 @@ public class Creator implements UserDetails {
     private String password;
     private String email;
     private String creatorProfileImage;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "account_created_on")
     private Date accountCreatedOn; // needed to be converted into sql
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -42,6 +44,11 @@ public class Creator implements UserDetails {
     @Override
     public String getUsername() {
         return name;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        accountCreatedOn = new Date();
     }
 
     @Override
