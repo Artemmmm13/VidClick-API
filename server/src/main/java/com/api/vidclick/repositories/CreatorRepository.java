@@ -13,4 +13,7 @@ public interface CreatorRepository extends JpaRepository<Creator, Long> {
 
     @NonNull
     Optional<Creator> findByUsername(@NonNull String userName);
+
+    @NonNull
+    Optional<Creator> findByEmail(@NonNull String email);
 }
