@@ -1,4 +1,4 @@
-package com.api.vidclick.controllers;
+package com.api.vidclick.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

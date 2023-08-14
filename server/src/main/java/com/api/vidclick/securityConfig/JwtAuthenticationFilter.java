@@ -1,5 +1,6 @@
 package com.api.vidclick.securityConfig;
 
+import com.api.vidclick.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
