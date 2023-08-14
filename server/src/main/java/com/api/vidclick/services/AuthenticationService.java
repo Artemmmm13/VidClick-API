@@ -1,9 +1,11 @@
-package com.api.vidclick.controllers;
+package com.api.vidclick.services;
 
+import com.api.vidclick.DTO.AuthenticationRequest;
+import com.api.vidclick.DTO.AuthenticationResponse;
+import com.api.vidclick.DTO.RegisterRequest;
 import com.api.vidclick.models.Creator;
 import com.api.vidclick.models.Role;
 import com.api.vidclick.repositories.CreatorRepository;
-import com.api.vidclick.securityConfig.JwtService;
 import com.api.vidclick.token.Token;
 import com.api.vidclick.token.TokenRepository;
 import com.api.vidclick.token.TokenType;
@@ -92,7 +94,7 @@ public class AuthenticationService {
         tokenRepository.saveAll(validCreatorTokens);
     }
 
-    private void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;

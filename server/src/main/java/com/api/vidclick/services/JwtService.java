@@ -1,4 +1,4 @@
-package com.api.vidclick.securityConfig;
+package com.api.vidclick.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
