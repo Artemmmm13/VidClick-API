@@ -50,13 +50,17 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        try {
             authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
+                            request.getUserName(),
                             request.getPassword()
                     )
             );
-        var creator = repository.findByEmail(request.getEmail())
+        } catch (Exception e) {
+            throw new RuntimeException("Authentication failed: " + e.getMessage(), e);
+        }
+        var creator = repository.findByName(request.getUserName())
                 .orElseThrow(()-> new NoSuchElementException("User with such name doesn't exist"));
         var jwtToken = jwtService.generateToken(creator);
         var refreshToken = jwtService.generateRefreshToken(creator);
