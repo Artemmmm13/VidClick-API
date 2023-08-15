@@ -1,6 +1,7 @@
-package com.api.vidclick.token;
+package com.api.vidclick.repositories;
 
 import com.api.vidclick.models.Creator;
+import com.api.vidclick.token.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
