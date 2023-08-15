@@ -7,7 +7,7 @@ import com.api.vidclick.models.Creator;
 import com.api.vidclick.models.Role;
 import com.api.vidclick.repositories.CreatorRepository;
 import com.api.vidclick.token.Token;
-import com.api.vidclick.token.TokenRepository;
+import com.api.vidclick.repositories.TokenRepository;
 import com.api.vidclick.token.TokenType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
