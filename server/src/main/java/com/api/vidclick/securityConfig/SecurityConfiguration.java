@@ -23,7 +23,7 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests()
-                .requestMatchers("/fundraising-offer/**", "/creator/**")
+                .requestMatchers("/fundraising-offers/**", "/creator/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

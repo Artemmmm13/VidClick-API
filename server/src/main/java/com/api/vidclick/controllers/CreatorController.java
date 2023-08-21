@@ -32,7 +32,7 @@ public class CreatorController{
     public ResponseEntity<Optional<Creator>> getCreatorById(@PathVariable Long requestedId){ // todo (dont return pswrd)
         if (repository.existsById(requestedId)){
             Optional<Creator> creator = repository.findById(requestedId);
-            return ResponseEntity.ok(creator)   ;
+            return ResponseEntity.ok(creator);
         }
         return (ResponseEntity<Optional<Creator>>) ResponseEntity.notFound();
     }
