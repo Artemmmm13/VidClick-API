@@ -1,5 +1,4 @@
-package com.api.vidclick.controllers;
-
+package com.api.vidclick.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationRequest {
+public class UpdateCreatorInfoRequest {
+    private String userName;
+    private String password;
     private String email;
-    String password;
-
+    private String creatorProfileImage;
 }

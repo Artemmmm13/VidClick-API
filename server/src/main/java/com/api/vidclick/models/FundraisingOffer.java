@@ -28,5 +28,14 @@ public class FundraisingOffer {
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private Creator creatorId;
     private String linkToBankAccount;
-    private Date accountCreatedOn; // needed to be converted into sql
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "offer_created_on")
+    private Date offerCreatedOn; // todo (sort by date)
+
+    @PrePersist
+    protected void onCreate(){
+        offerCreatedOn = new Date();
+    }
+
 }
+

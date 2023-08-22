@@ -1,6 +1,5 @@
 package com.api.vidclick.securityConfig;
 
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +23,7 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests()
-                .requestMatchers("/fundraising-offer/**", "/creator/**")
+                .requestMatchers("/fundraising-offers/**", "/creator/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -32,8 +31,8 @@ public class SecurityConfiguration {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authenticationProvider(authenticationProvider)// todo
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // todo
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

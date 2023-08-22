@@ -38,7 +38,7 @@ public class Creator implements UserDetails {
     @Override
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority((role == null)?Role.USER.toString():role.toString()));
+        return List.of(new SimpleGrantedAuthority((role == null)?Role.CREATOR.toString():role.toString()));
     }
 
     @Override
@@ -58,12 +58,12 @@ public class Creator implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override

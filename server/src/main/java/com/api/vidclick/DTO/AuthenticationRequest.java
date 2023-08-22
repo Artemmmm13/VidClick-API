@@ -1,4 +1,5 @@
-package com.api.vidclick.controllers;
+package com.api.vidclick.DTO;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
-    private String token;
+public class AuthenticationRequest {
+    private String userName;
+    private String password;
 }

@@ -1,4 +1,4 @@
-package com.api.vidclick.controllers;
+package com.api.vidclick.DTO;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
