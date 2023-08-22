@@ -1,7 +1,7 @@
 package com.api.vidclick.services;
 
 
-import com.api.vidclick.DTO.UpdateRequest;
+import com.api.vidclick.DTO.UpdateCreatorInfoRequest;
 import com.api.vidclick.models.Creator;
 import com.api.vidclick.repositories.CreatorRepository;
 import jakarta.transaction.Transactional;
@@ -21,7 +21,7 @@ public class UpdateCreatorProfileService {
     }
 
     @Transactional
-    public void updateAccountInfo(Long id, UpdateRequest request){
+    public void updateAccountInfo(Long id, UpdateCreatorInfoRequest request){
         Creator creator = repository.findById(id).orElseThrow(()-> new NoSuchElementException("Creator with the given id " +
                 "wasn't found"));
         if (request.getUserName() != null && !request.getUserName().isEmpty()){

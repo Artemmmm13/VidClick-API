@@ -3,7 +3,7 @@ package com.api.vidclick.controllers;
 import com.api.vidclick.DTO.AuthenticationRequest;
 import com.api.vidclick.DTO.AuthenticationResponse;
 import com.api.vidclick.DTO.RegisterRequest;
-import com.api.vidclick.DTO.UpdateRequest;
+import com.api.vidclick.DTO.UpdateCreatorInfoRequest;
 import com.api.vidclick.models.Creator;
 import com.api.vidclick.repositories.CreatorRepository;
 import java.io.IOException;
@@ -53,9 +53,9 @@ public class CreatorController{
     }
 
     @PutMapping("/edit-profile/{requestedId}")
-    public ResponseEntity<Void> updateCreatorAccountInfo(@PathVariable Long requestedId, @RequestBody UpdateRequest updateRequest){
+    public ResponseEntity<Void> updateCreatorAccountInfo(@PathVariable Long requestedId, @RequestBody UpdateCreatorInfoRequest updateCreatorInfoRequest){
         if (repository.existsById(requestedId)){
-            updateService.updateAccountInfo(requestedId, updateRequest);
+            updateService.updateAccountInfo(requestedId, updateCreatorInfoRequest);
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
