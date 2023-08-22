@@ -38,22 +38,22 @@ public class CreatorController{
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthenticationResponse> registerUser(@RequestBody RegisterRequest request){
+    private ResponseEntity<AuthenticationResponse> registerUser(@RequestBody RegisterRequest request){
         return ResponseEntity.ok(service.register(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authenticateRequest(@RequestBody AuthenticationRequest request){
+    private ResponseEntity<AuthenticationResponse> authenticateRequest(@RequestBody AuthenticationRequest request){
         return ResponseEntity.ok(service.authenticate(request));
     }
 
     @PostMapping("/refresh-token")
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         service.refreshToken(request, response);
     }
 
     @PutMapping("/edit-profile/{requestedId}")
-    public ResponseEntity<Void> updateCreatorAccountInfo(@PathVariable Long requestedId, @RequestBody UpdateCreatorInfoRequest updateCreatorInfoRequest){
+    private ResponseEntity<Void> updateCreatorAccountInfo(@PathVariable Long requestedId, @RequestBody UpdateCreatorInfoRequest updateCreatorInfoRequest){
         if (repository.existsById(requestedId)){
             updateService.updateAccountInfo(requestedId, updateCreatorInfoRequest);
             return ResponseEntity.noContent().build();

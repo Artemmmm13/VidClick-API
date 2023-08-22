@@ -30,7 +30,7 @@ public class FundraisingOffer {
     private String linkToBankAccount;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "offer_created_on")
-    private Date offerCreatedOn;
+    private Date offerCreatedOn; // todo (sort by date)
 
     @PrePersist
     protected void onCreate(){
