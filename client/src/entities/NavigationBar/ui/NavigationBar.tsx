@@ -73,8 +73,13 @@ export function NavigationBar() {
     };
 
     const validationSchema = Yup.object({
-        email: Yup.string().email('Incorrect email.').required('This field is required.'),
-        password: Yup.string().required('This field is required.'),
+        email: Yup
+            .string()
+            .email('Incorrect email format.')
+            .required('This field is required.'),
+        password: Yup
+            .string()
+            .required('This field is required.'),
     });
 
     const initialValues: ILoginValues = {

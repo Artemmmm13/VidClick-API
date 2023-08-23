@@ -16,7 +16,7 @@ export function RegistrationForm() {
             .required('This field is required.'),
         email: Yup
             .string()
-            .email('Incorrect email.')
+            .email('Incorrect email format.')
             .required('This field is required.'),
         password: Yup.string()
             .min(8, 'Your password is too short. (min 8 symbols, at least 1 digit)')
