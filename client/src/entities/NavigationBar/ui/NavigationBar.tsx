@@ -5,17 +5,19 @@ import {
     Container,
     IconButton,
     Menu,
-    MenuItem, TextField,
+    MenuItem,
     Toolbar,
     Tooltip,
     Typography
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {VidclickUiIcon} from "../../../shared/ui/VidclickUiIcon";
-import {Form, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 import React, {useState} from "react";
 import {VidclickUiButton} from "../../../shared/ui/VidclickUiButton";
 import {VidclickUiTextField} from "../../../shared/ui/VidclickUiTextField";
+import * as Yup from "yup";
+import {Field, Form, Formik} from "formik";
 
 export function NavigationBar() {
     const menuPages = [
@@ -24,8 +26,8 @@ export function NavigationBar() {
     ]
 
     const profileSettings = [
-        {label: "Profile", key: "offers"},
-        {label: "Settings", key: "about"},
+        {label: "Profile", key: "profile"},
+        {label: "Settings", key: "settings"},
         {label: "Statistics", key: "statistics"},
         {
             label: "Sign Out", key: "sign-out", action: () => {
@@ -69,6 +71,25 @@ export function NavigationBar() {
         setLoginFormOpen(false);
     };
 
+    interface IValuesLogin {
+        email: string;
+        password: string;
+    }
+
+    const validationSchema = Yup.object({
+        email: Yup.string().email('Incorrect email.').required('This field is required.'),
+        password: Yup.string().required('This field is required.'),
+    });
+
+    const initialValues: IValuesLogin = {
+        email: '',
+        password: ''
+    }
+
+    const onSubmit = (values: IValuesLogin) => {
+        console.log(values)
+    }
+
     return (
         <div>
             <AppBar sx={{fontFamily: 'Bricolage', bgcolor: 'black'}}
@@ -96,11 +117,11 @@ export function NavigationBar() {
                             >
                                 {
                                     menuPages.map((menuPage) => (
-                                        <Link to={menuPage.link}
+                                        <Link key={menuPage.key}
+                                              to={menuPage.link}
                                               style={{textDecoration: 'none', color: 'inherit'}}
                                         >
-                                            <MenuItem key={menuPage.key}
-                                                      onClick={handleCloseNavMenu}>
+                                            <MenuItem onClick={handleCloseNavMenu}>
                                                 <Typography textAlign="center">{menuPage.label}</Typography>
                                             </MenuItem>
                                         </Link>
@@ -113,13 +134,14 @@ export function NavigationBar() {
                         <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                             {
                                 menuPages.map((menuPage) => (
-                                    <Link to={menuPage.link}
+                                    <Link key={menuPage.key}
+                                          to={menuPage.link}
                                           style={{textDecoration: 'none', color: 'inherit'}}
                                     >
-                                        <VidclickUiButton key={menuPage.key}
-                                                          onClick={handleCloseNavMenu}
-                                                          vdBackgroundColor="#000000"
-                                                          sx={{my: 2, mx: 1}}
+                                        <VidclickUiButton
+                                            onClick={handleCloseNavMenu}
+                                            $vdBackgroundColor="#000000"
+                                            sx={{my: 2, mx: 1}}
                                         >
                                             {menuPage.label}
                                         </VidclickUiButton>
@@ -187,57 +209,68 @@ export function NavigationBar() {
                         horizontal: 'right',
                     }}
                 >
-                    <Form>
-                        <Box sx={{p: 2, mx: 2, maxWidth: '300px'}}>
-                            <Typography variant="h6"
-                                        gutterBottom
-                            >
-                                Welcome!
-                            </Typography>
-                            <VidclickUiTextField
-                                label="Email"
-                                variant="outlined"
-                                id="email"
-                                name="email"
-                                required
-                                fullWidth
-                            />
-                            <VidclickUiTextField
-                                label="Password"
-                                variant="outlined"
-                                type="password"
-                                id="password"
-                                name="password"
-                                required
-                                fullWidth
-                            />
-                            <Link to={'/signup'}>
-                                <Typography fontSize={12}
-                                            mb={1}
-                                            color={'#1B1464'}
-                                            sx={{
-                                                textDecoration: 'underline',
-                                                '&:hover': {
-                                                    cursor: 'pointer'
-                                                }
-                                            }}
-                                >
-                                    Don't have an account yet?
-                                </Typography>
-                            </Link>
-                            <VidclickUiButton
-                                variant="contained"
-                                type="submit"
-                                onClick={() => {
-                                    handleLoginFormClose();
-                                    handleLogin()
-                                }}
-                                fullWidth
-                            >
-                                Login
-                            </VidclickUiButton>
-                        </Box>
-                    </Form>
+                    <Formik initialValues={initialValues}
+                            onSubmit={onSubmit}
+                            validationSchema={validationSchema}>
+                        {(formikProps) => (
+                            <Form onSubmit={formikProps.handleSubmit}>
+                                <Box sx={{p: 2, mx: 2, maxWidth: '300px'}}>
+                                    <Typography variant="h6"
+                                                gutterBottom
+                                    >
+                                        Welcome!
+                                    </Typography>
+                                    <Field as={VidclickUiTextField}
+                                           label="Email"
+                                           variant="outlined"
+                                           id="email"
+                                           name="email"
+                                           required
+                                           fullWidth
+                                           error={formikProps.touched.email && !!formikProps.errors.email}
+                                           helperText={formikProps.touched.email && formikProps.errors.email}
+                                    />
+                                    <Field as={VidclickUiTextField}
+                                           label="Password"
+                                           variant="outlined"
+                                           type="password"
+                                           id="password"
+                                           name="password"
+                                           required
+                                           fullWidth
+                                           error={formikProps.touched.email && !!formikProps.errors.password}
+                                           helperText={formikProps.touched.email && formikProps.errors.password}
+                                    />
+                                    <Link to={'/signup'}>
+                                        <Typography fontSize={12}
+                                                    mb={1}
+                                                    color={'#1B1464'}
+                                                    sx={{
+                                                        textDecoration: 'underline',
+                                                        '&:hover': {
+                                                            cursor: 'pointer'
+                                                        }
+                                                    }}
+                                        >
+                                            Don't have an account yet?
+                                        </Typography>
+                                    </Link>
+                                    <VidclickUiButton
+                                        variant="contained"
+                                        type="submit"
+                                        disabled={!formikProps.touched.email || !!formikProps.errors.email || !!formikProps.errors.password}
+                                        onClick={() => {
+                                            handleLoginFormClose();
+                                            handleLogin()
+                                        }}
+                                        fullWidth
+                                    >
+                                        Login
+                                    </VidclickUiButton>
+                                </Box>
+                            </Form>
+                        )}
+                    </Formik>
                 </Menu>
             </AppBar>
         </div>
