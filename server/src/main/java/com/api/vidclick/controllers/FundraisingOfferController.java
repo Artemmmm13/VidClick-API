@@ -5,8 +5,12 @@ import com.api.vidclick.DTO.UpdateFundraisingOfferRequest;
 import com.api.vidclick.models.FundraisingOffer;
 import com.api.vidclick.repositories.FundraisingOfferRepository;
 import com.api.vidclick.services.CreateFundraisingOfferService;
+import com.api.vidclick.services.GetFundraisingOffersWithPaginationService;
 import com.api.vidclick.services.GetFundraisingOffersWithSortingService;
 import com.api.vidclick.services.UpdateFundraisingOfferService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,12 +25,24 @@ public class FundraisingOfferController {
     private final CreateFundraisingOfferService fundraisingOfferService;
     private final UpdateFundraisingOfferService updateFundraisingOfferService;
     private final GetFundraisingOffersWithSortingService sortingService;
+    private final GetFundraisingOffersWithPaginationService fundraisingOffersWithPagination;
 
-    public FundraisingOfferController(FundraisingOfferRepository repository, CreateFundraisingOfferService fundraisingOfferService, UpdateFundraisingOfferService updateFundraisingOfferService, GetFundraisingOffersWithSortingService sortingService) {
+    public FundraisingOfferController(FundraisingOfferRepository repository, CreateFundraisingOfferService fundraisingOfferService, UpdateFundraisingOfferService updateFundraisingOfferService, GetFundraisingOffersWithSortingService sortingService, GetFundraisingOffersWithPaginationService fundraisingOffersWithPagination) {
         this.repository = repository;
         this.fundraisingOfferService = fundraisingOfferService;
         this.updateFundraisingOfferService = updateFundraisingOfferService;
         this.sortingService = sortingService;
+        this.fundraisingOffersWithPagination = fundraisingOffersWithPagination;
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<FundraisingOffer>> getProducts(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<FundraisingOffer> offersWithPagination = fundraisingOffersWithPagination.getFundraisingOfferWithPagination(pageable);
+        return ResponseEntity.ok(offersWithPagination);
     }
 
     @GetMapping("/offers-sorted-by/{field}")
