@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 
 @RestController
@@ -24,36 +24,39 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CreatorController{
 
-    private final AuthenticationService service;
+    private final AuthenticationService authService;
     private final CreatorRepository repository;
     private final UpdateCreatorProfileService updateService;
 
     @GetMapping("/{requestedId}")
-    public ResponseEntity<Optional<Creator>> getCreatorById(@PathVariable Long requestedId){ // todo (dont return pswrd)
+    public ResponseEntity<Creator> getCreatorById(@PathVariable Long requestedId){ // todo (dont return pswrd)
         if (repository.existsById(requestedId)){
-            Optional<Creator> creator = repository.findById(requestedId);
+            Creator creator = repository.findById(requestedId).orElseThrow(
+                    ()-> new NoSuchElementException("The user with the given Id doesn't exist"));
             return ResponseEntity.ok(creator);
         }
-        return (ResponseEntity<Optional<Creator>>) ResponseEntity.notFound();
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/signup")
     private ResponseEntity<AuthenticationResponse> registerUser(@RequestBody RegisterRequest request){
-        return ResponseEntity.ok(service.register(request));
+        return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
     private ResponseEntity<AuthenticationResponse> authenticateRequest(@RequestBody AuthenticationRequest request){
-        return ResponseEntity.ok(service.authenticate(request));
+        return ResponseEntity.ok(authService.authenticate(request));
     }
 
     @PostMapping("/refresh-token")
     private void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        service.refreshToken(request, response);
+        authService.refreshToken(request, response);
     }
 
-    @PutMapping("/edit-profile/{requestedId}")
-    private ResponseEntity<Void> updateCreatorAccountInfo(@PathVariable Long requestedId, @RequestBody UpdateCreatorInfoRequest updateCreatorInfoRequest){
+    @PutMapping("/edit-profile/{requestedId}") // todo (exclude all sensitive data)
+    private ResponseEntity<Void> updateCreatorAccountInfo(@PathVariable Long requestedId
+            , @RequestBody UpdateCreatorInfoRequest updateCreatorInfoRequest){
+
         if (repository.existsById(requestedId)){
             updateService.updateAccountInfo(requestedId, updateCreatorInfoRequest);
             return ResponseEntity.noContent().build();

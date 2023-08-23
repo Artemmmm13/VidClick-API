@@ -23,7 +23,7 @@ public class FundraisingOffer {
     private String title;
     private String description;
     private List<String> picturesOfFundraisingOffer;
-    private Integer amountToGather;
+    private Integer amount;
     @ManyToOne
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private Creator creatorId;

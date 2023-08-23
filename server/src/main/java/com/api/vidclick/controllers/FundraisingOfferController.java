@@ -27,7 +27,9 @@ public class FundraisingOfferController {
     private final GetFundraisingOffersWithSortingService sortingService;
     private final GetFundraisingOffersWithPaginationService fundraisingOffersWithPagination;
 
-    public FundraisingOfferController(FundraisingOfferRepository repository, CreateFundraisingOfferService fundraisingOfferService, UpdateFundraisingOfferService updateFundraisingOfferService, GetFundraisingOffersWithSortingService sortingService, GetFundraisingOffersWithPaginationService fundraisingOffersWithPagination) {
+    public FundraisingOfferController(FundraisingOfferRepository repository, CreateFundraisingOfferService fundraisingOfferService
+            , UpdateFundraisingOfferService updateFundraisingOfferService, GetFundraisingOffersWithSortingService sortingService
+            , GetFundraisingOffersWithPaginationService fundraisingOffersWithPagination) {
         this.repository = repository;
         this.fundraisingOfferService = fundraisingOfferService;
         this.updateFundraisingOfferService = updateFundraisingOfferService;
@@ -66,7 +68,9 @@ public class FundraisingOfferController {
     }
 
     @PutMapping("/update/{requestedId}")
-    private ResponseEntity<Void> updateFundraisingOffer(@PathVariable Long requestedId,@RequestBody UpdateFundraisingOfferRequest updateFundraisingOfferRequest){
+    private ResponseEntity<Void> updateFundraisingOffer(@PathVariable Long requestedId
+            ,@RequestBody UpdateFundraisingOfferRequest updateFundraisingOfferRequest){
+
         if (repository.existsById(requestedId)){
             updateFundraisingOfferService.updateFundraisingOffer(requestedId, updateFundraisingOfferRequest);
             return ResponseEntity.noContent().build();

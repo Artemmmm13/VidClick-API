@@ -34,7 +34,7 @@ public class UpdateFundraisingOfferService {
         }
 
         if (request.getAmountToGather() != null){
-            updatedOffer.setAmountToGather(request.getAmountToGather());
+            updatedOffer.setAmount(request.getAmountToGather());
         }
 
         if (!request.getLinkToBankAccount().isEmpty()){
