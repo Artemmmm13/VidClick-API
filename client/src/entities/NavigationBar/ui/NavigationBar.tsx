@@ -5,16 +5,17 @@ import {
     Container,
     IconButton,
     Menu,
-    MenuItem,
+    MenuItem, TextField,
     Toolbar,
     Tooltip,
     Typography
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {VidclickUiIcon} from "../../../shared/ui/VidclickUiIcon";
-import {Link} from "react-router-dom";
+import {Form, Link} from "react-router-dom";
 import React, {useState} from "react";
 import {VidclickUiButton} from "../../../shared/ui/VidclickUiButton";
+import {VidclickUiTextField} from "../../../shared/ui/VidclickUiTextField";
 
 export function NavigationBar() {
     const menuPages = [
@@ -35,6 +36,7 @@ export function NavigationBar() {
     ]
 
     const [login, setLogin] = useState(false);
+    const [loginFormOpen, setLoginFormOpen] = useState(false);
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -57,6 +59,15 @@ export function NavigationBar() {
     const handleLogin = () => {
         setLogin(!login);
     }
+
+    const handleLoginClick = () => {
+        setLoginFormOpen(true);
+        handleCloseNavMenu();
+    };
+
+    const handleLoginFormClose = () => {
+        setLoginFormOpen(false);
+    };
 
     return (
         <div>
@@ -106,9 +117,9 @@ export function NavigationBar() {
                                           style={{textDecoration: 'none', color: 'inherit'}}
                                     >
                                         <VidclickUiButton key={menuPage.key}
-                                                onClick={handleCloseNavMenu}
-                                                vdBackgroundColor="#000000"
-                                                sx={{my: 2, mx: 1}}
+                                                          onClick={handleCloseNavMenu}
+                                                          vdBackgroundColor="#000000"
+                                                          sx={{my: 2, mx: 1}}
                                         >
                                             {menuPage.label}
                                         </VidclickUiButton>
@@ -142,13 +153,13 @@ export function NavigationBar() {
                                         profileSettings.map((profileSetting) => (
                                             profileSetting.action ?
                                                 <MenuItem key={profileSetting.key}
-                                                                              onClick={profileSetting.action}>
+                                                          onClick={profileSetting.action}>
                                                     <Typography textAlign="center">{profileSetting.label}</Typography>
                                                 </MenuItem> :
-                                            <MenuItem key={profileSetting.key}
-                                                      onClick={handleCloseUserMenu}>
-                                                <Typography textAlign="center">{profileSetting.label}</Typography>
-                                            </MenuItem>
+                                                <MenuItem key={profileSetting.key}
+                                                          onClick={handleCloseUserMenu}>
+                                                    <Typography textAlign="center">{profileSetting.label}</Typography>
+                                                </MenuItem>
                                         ))
                                     }
                                 </Menu>
@@ -156,13 +167,78 @@ export function NavigationBar() {
                             :
                             <Box sx={{flexGrow: 0}}>
                                 <VidclickUiButton sx={{my: 2, display: 'block'}}
-                                        onClick={() => setLogin(!login)}>
+                                                  onClick={handleLoginClick}>
                                     Sign Up
                                 </VidclickUiButton>
                             </Box>
                         }
                     </Toolbar>
                 </Container>
+                <Menu
+                    anchorEl={anchorElNav}
+                    open={loginFormOpen}
+                    onClose={handleLoginFormClose}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                >
+                    <Form>
+                        <Box sx={{p: 2, mx: 2, maxWidth: '300px'}}>
+                            <Typography variant="h6"
+                                        gutterBottom
+                            >
+                                Welcome!
+                            </Typography>
+                            <VidclickUiTextField
+                                label="Email"
+                                variant="outlined"
+                                id="email"
+                                name="email"
+                                required
+                                fullWidth
+                            />
+                            <VidclickUiTextField
+                                label="Password"
+                                variant="outlined"
+                                type="password"
+                                id="password"
+                                name="password"
+                                required
+                                fullWidth
+                            />
+                            <Link to={'/signup'}>
+                                <Typography fontSize={12}
+                                            mb={1}
+                                            color={'#1B1464'}
+                                            sx={{
+                                                textDecoration: 'underline',
+                                                '&:hover': {
+                                                    cursor: 'pointer'
+                                                }
+                                            }}
+                                >
+                                    Don't have an account yet?
+                                </Typography>
+                            </Link>
+                            <VidclickUiButton
+                                variant="contained"
+                                type="submit"
+                                onClick={() => {
+                                    handleLoginFormClose();
+                                    handleLogin()
+                                }}
+                                fullWidth
+                            >
+                                Login
+                            </VidclickUiButton>
+                        </Box>
+                    </Form>
+                </Menu>
             </AppBar>
         </div>
     );
