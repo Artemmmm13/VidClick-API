@@ -35,7 +35,7 @@ public class FundraisingOfferController {
         this.fundraisingOffersWithPagination = fundraisingOffersWithPagination;
     }
 
-    @GetMapping("/page")
+    @GetMapping("/list")
     public ResponseEntity<Page<FundraisingOffer>> getProducts(
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size) {
@@ -45,12 +45,12 @@ public class FundraisingOfferController {
         return ResponseEntity.ok(offersWithPagination);
     }
 
-    @GetMapping("/offers-sorted-by/{field}")
+    @GetMapping("/sorted-by/{field}")
     public ResponseEntity<List<FundraisingOffer>> getListOfFundraisingOffers(@PathVariable String field){
         return ResponseEntity.ok(sortingService.getSortedFundraisingOffers(field));
     }
 
-    @GetMapping("/find-offer/{requestedId}")
+    @GetMapping("/find/{requestedId}")
     public ResponseEntity<Optional<FundraisingOffer>> getFundraisingOfferById(@PathVariable Long requestedId){
         if (repository.existsById(requestedId)){
             Optional<FundraisingOffer> offer = repository.findById(requestedId);
@@ -59,13 +59,13 @@ public class FundraisingOfferController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/create-offer")
+    @PostMapping("/create")
     private ResponseEntity<FundraisingOffer> createFundraisingOffer(@RequestBody CreateFundraisingOfferRequest createFundraisingOfferRequest
             ,UriComponentsBuilder ucb){
         return fundraisingOfferService.createOffer(createFundraisingOfferRequest, ucb);
     }
 
-    @PutMapping("/update-offer/{requestedId}")
+    @PutMapping("/update/{requestedId}")
     private ResponseEntity<Void> updateFundraisingOffer(@PathVariable Long requestedId,@RequestBody UpdateFundraisingOfferRequest updateFundraisingOfferRequest){
         if (repository.existsById(requestedId)){
             updateFundraisingOfferService.updateFundraisingOffer(requestedId, updateFundraisingOfferRequest);
@@ -75,7 +75,7 @@ public class FundraisingOfferController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/delete-offer/{requestedId}")
+    @DeleteMapping("/delete/{requestedId}")
     private ResponseEntity<Void> deleteFundraisingOffer(@PathVariable Long requestedId){
         if (repository.existsById(requestedId)){
             repository.deleteById(requestedId);
