@@ -40,7 +40,7 @@ public class CreateFundraisingOfferService {
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .picturesOfFundraisingOffer(request.getPicturesOfFundraisingOffer())
-                .amountToGather(request.getAmountToGather())
+                .amount(request.getAmountToGather())
                 .linkToBankAccount(request.getLinkToBankAccount())
                 .offerCreatedOn(new Date())
                 .creatorId(creatorRepository.findById(request.getCreatorId()).orElseThrow())
