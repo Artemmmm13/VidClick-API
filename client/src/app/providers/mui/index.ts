@@ -1,20 +1,22 @@
-import {createTheme} from "@mui/material";
+import { createTheme } from '@mui/material/styles';
 
 declare module "@mui/material/styles" {
     interface Palette {
-
+        vidclickUiPrimary?: string;
     }
     interface PaletteOptions {
-
+        vidclickUiPrimary?: string;
     }
 }
 
-export const theme = createTheme({
+const theme = createTheme({
     typography: {
-        fontFamily: 'Bricolage Regular',
+        fontFamily: 'Bricolage, Arial',
         fontSize: 18
     },
     palette: {
-
+        vidclickUiPrimary: '#1B1464',
     }
-})
+});
+
+export default theme;
