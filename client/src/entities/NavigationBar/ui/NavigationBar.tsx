@@ -18,6 +18,7 @@ import {VidclickUiButton} from "../../../shared/ui/VidclickUiButton";
 import {VidclickUiTextField} from "../../../shared/ui/VidclickUiTextField";
 import * as Yup from "yup";
 import {Field, Form, Formik} from "formik";
+import {ILoginValues} from "../../../shared/models/ILoginValues.ts";
 
 export function NavigationBar() {
     const menuPages = [
@@ -71,22 +72,17 @@ export function NavigationBar() {
         setLoginFormOpen(false);
     };
 
-    interface IValuesLogin {
-        email: string;
-        password: string;
-    }
-
     const validationSchema = Yup.object({
         email: Yup.string().email('Incorrect email.').required('This field is required.'),
         password: Yup.string().required('This field is required.'),
     });
 
-    const initialValues: IValuesLogin = {
+    const initialValues: ILoginValues = {
         email: '',
         password: ''
     }
 
-    const onSubmit = (values: IValuesLogin) => {
+    const onSubmit = (values: ILoginValues) => {
         console.log(values)
     }
 
@@ -96,7 +92,7 @@ export function NavigationBar() {
                     position="static">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
-                        <VidclickUiIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 10}}/>
+                        <VidclickUiIcon primary sx={{display: {xs: 'none', md: 'flex'}, mr: 10}}/>
                         <Typography sx={{display: {xs: 'none', md: 'flex'}}}/>
                         <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
                             <IconButton size="large"
@@ -129,7 +125,7 @@ export function NavigationBar() {
                                 }
                             </Menu>
                         </Box>
-                        <VidclickUiIcon sx={{display: {xs: 'flex', md: 'none'}, mr: 1}}/>
+                        <VidclickUiIcon primary sx={{display: {xs: 'flex', md: 'none'}, mr: 1}}/>
                         <Typography sx={{display: {xs: 'flex', md: 'none'}, flexGrow: 1}}/>
                         <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                             {

@@ -1,0 +1,1 @@
+export {VidclickUiCopyright} from "./VidclickUiCopyright"
