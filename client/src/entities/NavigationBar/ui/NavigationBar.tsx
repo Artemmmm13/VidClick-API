@@ -19,6 +19,7 @@ import {VidclickUiTextField} from "../../../shared/ui/VidclickUiTextField";
 import * as Yup from "yup";
 import {Field, Form, Formik} from "formik";
 import {ILoginValues} from "../../../shared/models/ILoginValues.ts";
+import {VidclickUiLink} from "../../../shared/ui/VidclickUiLink";
 
 export function NavigationBar() {
     const menuPages = [
@@ -27,9 +28,9 @@ export function NavigationBar() {
     ]
 
     const profileSettings = [
-        {label: "Profile", key: "profile"},
-        {label: "Settings", key: "settings"},
-        {label: "Statistics", key: "statistics"},
+        {label: "Profile", key: "profile", link: "profile"},
+        {label: "Settings", key: "settings", link: "profile/settings"},
+        {label: "Statistics", key: "statistics", link: "profile/statistics"},
         {
             label: "Sign Out", key: "sign-out", action: () => {
                 handleLogin();
@@ -175,14 +176,17 @@ export function NavigationBar() {
                                     {
                                         profileSettings.map((profileSetting) => (
                                             profileSetting.action ?
-                                                <MenuItem key={profileSetting.key}
-                                                          onClick={profileSetting.action}>
-                                                    <Typography textAlign="center">{profileSetting.label}</Typography>
-                                                </MenuItem> :
-                                                <MenuItem key={profileSetting.key}
-                                                          onClick={handleCloseUserMenu}>
-                                                    <Typography textAlign="center">{profileSetting.label}</Typography>
-                                                </MenuItem>
+                                                    <MenuItem key={profileSetting.key}
+                                                              onClick={profileSetting.action}>
+                                                        <Typography textAlign="center">{profileSetting.label}</Typography>
+                                                    </MenuItem>
+                                                :
+                                                <VidclickUiLink to={profileSetting.link}>
+                                                    <MenuItem key={profileSetting.key}
+                                                              onClick={handleCloseUserMenu}>
+                                                        <Typography textAlign="center">{profileSetting.label}</Typography>
+                                                    </MenuItem>
+                                                </VidclickUiLink>
                                         ))
                                     }
                                 </Menu>

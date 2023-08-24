@@ -7,6 +7,8 @@ import {About} from "../../../pages/About";
 import {CreatorProfile} from "../../../pages/CreatorProfile";
 import {RegistrationPage} from "../../../pages/RegistrationPage/RegistrationPage.tsx";
 import {LoginPage} from "../../../pages/LoginPage";
+import {CreatorProfileSettings} from "../../../pages/CreatorProfile/Settings";
+import {CreatorProfileStatistics} from "../../../pages/CreatorProfile/Statistics";
 
 export const router = createBrowserRouter([
         {
@@ -27,8 +29,16 @@ export const router = createBrowserRouter([
                     element: <About/>
                 },
                 {
-                    path: "/profile:id",
-                    element: <CreatorProfile/>
+                    path: "/profile",
+                    element: <CreatorProfile/>,
+                },
+                {
+                    path: "/profile/settings",
+                    element: <CreatorProfileSettings/>
+                },
+                {
+                    path: "/profile/statistics",
+                    element: <CreatorProfileStatistics/>
                 }
             ]
         },
