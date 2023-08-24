@@ -1,7 +1,9 @@
+import {CreatorProfileCard} from "../../widgets/cards/CreatorProfileCard";
+
 export function CreatorProfile() {
     return (
         <div>
-            Profile!
+            <CreatorProfileCard/>
         </div>
     );
 }
