@@ -6,4 +6,4 @@ target
 .gitignore
 application.yml
 /src/main/resources/application.properties
-.idea
+.idea/
