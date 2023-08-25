@@ -40,7 +40,12 @@ public class CreatorController{
 
     @PostMapping("/signup")
     private ResponseEntity<AuthenticationResponse> registerUser(@RequestBody RegisterRequest request){
-        return ResponseEntity.ok(authService.register(request));
+        try {
+            AuthenticationResponse response = authService.register(request);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/login")

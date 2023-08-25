@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,7 +38,7 @@ public class AuthenticationService {
 
     private final Pattern patternForWhiteSpaces = Pattern.compile("\\s");
     private final Pattern patternForSpecialChars = Pattern.compile("[^a-zA-Z0-9\\\\s]");
-    private final Pattern patternForDigits = Pattern.compile("//d");
+    private final Pattern patternForDigits = Pattern.compile("\\d");
 
     public AuthenticationResponse register(RegisterRequest request) {
         if (!isValidUserName(request.getName())){
