@@ -15,9 +15,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
+import java.net.URI;
 import java.util.regex.Pattern;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -26,6 +28,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import java.util.NoSuchElementException;
 
 @Service
@@ -42,7 +46,7 @@ public class AuthenticationService {
     private final Pattern patternForSpecialChars = Pattern.compile("[^a-zA-Z0-9\\\\s]");
     private final Pattern patternForDigits = Pattern.compile("\\d");
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public ResponseEntity<Creator> register(RegisterRequest request, UriComponentsBuilder ucb) {
         if (!isValidUserName(request.getName())){
             throw new IllegalArgumentException("User name should contain only alphabetic characters");
         }
@@ -71,10 +75,11 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(creator);
         var refreshToken = jwtService.generateToken(creator);
         saveCreatorToken(savedCreator, jwtToken);
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
+        URI locationOfNewCreator = ucb
+                .path("creator/account/{id}")
+                .buildAndExpand(savedCreator.getId())
+                .toUri();
+        return ResponseEntity.created(locationOfNewCreator).build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
