@@ -46,12 +46,12 @@ public class CreateFundraisingOfferService {
                 .creatorId(creatorRepository.findById(request.getCreatorId()).orElseThrow())
                 .build();
 
+        fundraisingOfferRepository.save(newFundraisingOffer);
+
         URI locationOfNewOffer = ucb
                 .path("offers/{id}")
                 .buildAndExpand(newFundraisingOffer.getId())
                 .toUri();
-
-        fundraisingOfferRepository.save(newFundraisingOffer);
 
         return ResponseEntity.created(locationOfNewOffer).build();
     }

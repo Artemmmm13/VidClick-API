@@ -13,9 +13,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+
+import java.io.File;
+import java.net.URI;
 import java.util.regex.Pattern;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -24,6 +28,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import java.util.NoSuchElementException;
 
 @Service
@@ -40,7 +46,7 @@ public class AuthenticationService {
     private final Pattern patternForSpecialChars = Pattern.compile("[^a-zA-Z0-9\\\\s]");
     private final Pattern patternForDigits = Pattern.compile("\\d");
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public ResponseEntity<Creator> register(RegisterRequest request, UriComponentsBuilder ucb) {
         if (!isValidUserName(request.getName())){
             throw new IllegalArgumentException("User name should contain only alphabetic characters");
         }
@@ -51,6 +57,10 @@ public class AuthenticationService {
 
         if (!isValidPassword(request.getPassword())){
             throw new IllegalArgumentException("Provided password does not satisfy our security requirements");
+        }
+
+        if (!isValidPhotoPath(request.getCreatorProfileImage())){
+            throw new IllegalArgumentException("Provided file is either not a photo or it doesn't exist");
         }
 
 
@@ -65,10 +75,11 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(creator);
         var refreshToken = jwtService.generateToken(creator);
         saveCreatorToken(savedCreator, jwtToken);
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build();
+        URI locationOfNewCreator = ucb
+                .path("creator/account/{id}")
+                .buildAndExpand(savedCreator.getId())
+                .toUri();
+        return ResponseEntity.created(locationOfNewCreator).build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -146,7 +157,7 @@ public class AuthenticationService {
     }
 
     private boolean isValidPassword(String password){
-        if (password.isEmpty() || password.length() < 8){
+        if (password.length() < 8){
             return false;
         }
 
@@ -184,6 +195,42 @@ public class AuthenticationService {
         return true;
     }
 
-    //todo (photo path validation)
+    private boolean isValidPhotoPath(String photoPath){
+        File photoFile = new File(photoPath);
+        String userImageExtension = getPhotoExtension(photoPath);
+
+        if (!photoFile.exists()){
+            return false;
+        }
+
+        if (!isValidImageExtension(userImageExtension)){
+            return false;
+        }
+
+
+        return true;
+    }
+
+
+    private String getPhotoExtension(String photoPath){
+        int extensionIndex = photoPath.lastIndexOf(".");
+
+        if (extensionIndex>0 && extensionIndex<photoPath.length()-1){
+            return photoPath.substring(extensionIndex+1).toLowerCase();
+        }
+        return "";
+    }
+
+
+    private boolean isValidImageExtension(String imageExtension){
+        String[] allowedExtensions = {"jpeg", "jpg", "svg", "png"};
+
+        for (String str: allowedExtensions){
+            if (str.equals(imageExtension)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
