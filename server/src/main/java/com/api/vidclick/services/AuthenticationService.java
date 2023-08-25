@@ -13,9 +13,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +37,24 @@ public class AuthenticationService {
     private final AuthenticationManager authManager;
     private final TokenRepository tokenRepository;
 
+    private final Pattern patternForWhiteSpaces = Pattern.compile("\\s");
+    private final Pattern patternForSpecialChars = Pattern.compile("[^a-zA-Z0-9\\\\s]");
+    private final Pattern patternForDigits = Pattern.compile("//d");
+
     public AuthenticationResponse register(RegisterRequest request) {
+        if (!isValidUserName(request.getName())){
+            throw new IllegalArgumentException("User name should contain only alphabetic characters");
+        }
+
+        if (!isValidEmail(request.getEmail())){
+            throw new IllegalArgumentException("Provided email is either non-valid or already used");
+        }
+
+        if (!isValidPassword(request.getPassword())){
+            throw new IllegalArgumentException("Provided password does not satisfy our security requirements");
+        }
+
+
         var creator = Creator.builder()
                 .name(request.getName())
                 .email(request.getEmail())
@@ -121,5 +142,49 @@ public class AuthenticationService {
         }
     }
 
+    private boolean isValidEmail(String email){
+        return EmailValidator.getInstance().isValid(email);
+    }
+
+    private boolean isValidPassword(String password){
+        if (password.isEmpty() || password.length() < 8){
+            return false;
+        }
+
+        if (password.toLowerCase().equals(password)){
+            return false;
+        }
+
+        if (password.toUpperCase().equals(password)){
+            return false;
+        }
+
+        if (patternForWhiteSpaces.matcher(password).find()){
+            return false;
+        }
+
+        if (!patternForSpecialChars.matcher(password).find()){
+            return false;
+        }
+
+        if (!patternForDigits.matcher(password).find()){
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isValidUserName(String userName){
+        if (patternForDigits.matcher(userName).find()){
+            return false;
+        }
+        if (patternForSpecialChars.matcher(userName).find()){
+            return false;
+        }
+
+        return true;
+    }
+
+    //todo (photo path validation)
 }
 
