@@ -13,6 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+
+import java.io.File;
 import java.util.regex.Pattern;
 
 
@@ -51,6 +53,10 @@ public class AuthenticationService {
 
         if (!isValidPassword(request.getPassword())){
             throw new IllegalArgumentException("Provided password does not satisfy our security requirements");
+        }
+
+        if (!isValidPhotoPath(request.getCreatorProfileImage())){
+            throw new IllegalArgumentException("Provided file is either not a photo or it doesn't exist");
         }
 
 
@@ -146,7 +152,7 @@ public class AuthenticationService {
     }
 
     private boolean isValidPassword(String password){
-        if (password.isEmpty() || password.length() < 8){
+        if (password.length() < 8){
             return false;
         }
 
@@ -184,6 +190,42 @@ public class AuthenticationService {
         return true;
     }
 
-    //todo (photo path validation)
+    private boolean isValidPhotoPath(String photoPath){
+        File photoFile = new File(photoPath);
+        String userImageExtension = getPhotoExtension(photoPath);
+
+        if (!photoFile.exists()){
+            return false;
+        }
+
+        if (!isValidImageExtension(userImageExtension)){
+            return false;
+        }
+
+
+        return true;
+    }
+
+
+    private String getPhotoExtension(String photoPath){
+        int extensionIndex = photoPath.lastIndexOf(".");
+
+        if (extensionIndex>0 && extensionIndex<photoPath.length()-1){
+            return photoPath.substring(extensionIndex+1).toLowerCase();
+        }
+        return "";
+    }
+
+
+    private boolean isValidImageExtension(String imageExtension){
+        String[] allowedExtensions = {"jpeg", "jpg", "svg", "png"};
+
+        for (String str: allowedExtensions){
+            if (str.equals(imageExtension)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
