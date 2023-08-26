@@ -1,8 +1,5 @@
 package com.api.vidclick.controllers;
 
-import com.api.vidclick.DTO.AuthenticationRequest;
-import com.api.vidclick.DTO.AuthenticationResponse;
-import com.api.vidclick.DTO.RegisterRequest;
 import com.api.vidclick.DTO.UpdateCreatorInfoRequest;
 import com.api.vidclick.models.Creator;
 import com.api.vidclick.repositories.CreatorRepository;
@@ -15,13 +12,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.NoSuchElementException;
 
 
 @RestController
-@RequestMapping("/creator")
+@RequestMapping("/api/creator")
 @RequiredArgsConstructor
 public class CreatorController{
 
@@ -37,21 +33,6 @@ public class CreatorController{
             return ResponseEntity.ok(creator);
         }
         return ResponseEntity.notFound().build();
-    }
-
-    @PostMapping("/signup")
-    private ResponseEntity<Creator> registerUser(@RequestBody RegisterRequest request
-            , UriComponentsBuilder ucb){
-        try {
-            return authService.register(request, ucb);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @PostMapping("/login")
-    private ResponseEntity<AuthenticationResponse> authenticateRequest(@RequestBody AuthenticationRequest request){
-        return ResponseEntity.ok(authService.authenticate(request));
     }
 
     @PostMapping("/refresh-token")
