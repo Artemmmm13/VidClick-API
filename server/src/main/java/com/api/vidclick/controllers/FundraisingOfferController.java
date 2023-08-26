@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/fundraising-offers")
+@RequestMapping("/api/fundraising-offers")
 public class FundraisingOfferController {
     private final FundraisingOfferRepository repository;
     private final CreateFundraisingOfferService fundraisingOfferService;
