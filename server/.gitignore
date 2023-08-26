@@ -6,3 +6,6 @@ target
 .gitignore
 application.yml
 .idea
+=======
+.idea/
+
