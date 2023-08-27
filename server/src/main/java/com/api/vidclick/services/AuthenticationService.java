@@ -1,6 +1,7 @@
 package com.api.vidclick.services;
 
 import com.api.vidclick.DTO.AuthenticationRequest;
+import com.api.vidclick.DTO.LoginResponse;
 import com.api.vidclick.DTO.SignUpResponse;
 import com.api.vidclick.DTO.RegisterRequest;
 import com.api.vidclick.models.Creator;
@@ -78,7 +79,15 @@ public class AuthenticationService {
         return ResponseEntity.status(201).body(response);
     }
 
-    public SignUpResponse authenticate(AuthenticationRequest request) {
+    public ResponseEntity<LoginResponse> authenticate(AuthenticationRequest request) {
+        if (!isValidUserName(request.getUserName())){
+            throw new IllegalArgumentException("User name should contain only alphabetic characters or spaces");
+        }
+
+        if (!isValidPassword(request.getPassword())){
+            throw new IllegalArgumentException("The provided password doesn't meet our security requirements");
+        }
+
         try {
             authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -89,14 +98,14 @@ public class AuthenticationService {
         } catch (Exception e) {
             throw new RuntimeException("Authentication failed: " + e.getMessage(), e);
         }
+
         var creator = repository.findByName(request.getUserName())
                 .orElseThrow(()-> new NoSuchElementException("User with such name doesn't exist"));
         var jwtToken = jwtService.generateToken(creator);
         var refreshToken = jwtService.generateRefreshToken(creator);
         revokeAllCreatorTokens(creator);
         saveCreatorToken(creator, jwtToken);
-        return SignUpResponse.builder().accessToken(jwtToken).refreshToken(refreshToken)
-                .build();
+        return ResponseEntity.status(200).body(new LoginResponse(jwtToken, refreshToken));
     }
 
     private void saveCreatorToken(Creator creator, String jwtToken){

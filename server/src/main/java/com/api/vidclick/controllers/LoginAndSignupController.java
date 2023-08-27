@@ -2,7 +2,6 @@ package com.api.vidclick.controllers;
 
 import com.api.vidclick.DTO.AuthenticationRequest;
 import com.api.vidclick.DTO.ErrorMessageResponse;
-import com.api.vidclick.DTO.SignUpResponse;
 import com.api.vidclick.DTO.RegisterRequest;
 import com.api.vidclick.services.AuthenticationService;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +29,11 @@ public class LoginAndSignupController {
     }
 
     @PostMapping("/login")
-    private ResponseEntity<SignUpResponse> authenticateRequest(@RequestBody AuthenticationRequest request){
-        return ResponseEntity.ok(authService.authenticate(request));
+    private ResponseEntity<?> authenticateRequest(@RequestBody AuthenticationRequest request){
+        try{
+            return authService.authenticate(request);
+        } catch (Exception e){
+            return ResponseEntity.status(400).body(new ErrorMessageResponse(e.getMessage()));
+        }
     }
 }
