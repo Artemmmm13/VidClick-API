@@ -1,6 +1,7 @@
 package com.api.vidclick.controllers;
 
 import com.api.vidclick.DTO.AuthenticationRequest;
+import com.api.vidclick.DTO.ErrorMessageResponse;
 import com.api.vidclick.DTO.SignUpResponse;
 import com.api.vidclick.DTO.RegisterRequest;
 import com.api.vidclick.services.AuthenticationService;
@@ -20,11 +21,11 @@ public class LoginAndSignupController {
     }
 
     @PostMapping("/signup")
-    private ResponseEntity<SignUpResponse> registerUser(@RequestBody RegisterRequest request){
+    private ResponseEntity<?> registerUser(@RequestBody RegisterRequest request){
         try {
             return authService.register(request);
         } catch (IllegalArgumentException e) {
-           return ResponseEntity.badRequest().build();
+           return ResponseEntity.status(400).body(new ErrorMessageResponse(e.getMessage()));
         }
     }
 
