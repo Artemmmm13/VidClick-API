@@ -1,7 +1,7 @@
 package com.api.vidclick.services;
 
 import com.api.vidclick.DTO.AuthenticationRequest;
-import com.api.vidclick.DTO.AuthenticationResponse;
+import com.api.vidclick.DTO.SignUpResponse;
 import com.api.vidclick.DTO.RegisterRequest;
 import com.api.vidclick.models.Creator;
 import com.api.vidclick.models.Role;
@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
-import java.net.URI;
 import java.util.regex.Pattern;
 
 
@@ -28,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.NoSuchElementException;
 
@@ -43,10 +41,11 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
 
     private final Pattern patternForWhiteSpaces = Pattern.compile("\\s");
-    private final Pattern patternForSpecialChars = Pattern.compile("[^a-zA-Z0-9\\\\s]");
+    private final Pattern patternForUserName = Pattern.compile("^[a-zA-Z\\\\s]+$");
     private final Pattern patternForDigits = Pattern.compile("\\d");
+    private final Pattern patternForSpecialChars = Pattern.compile("[^a-zA-Z0-9\\\\s]");
 
-    public ResponseEntity<Creator> register(RegisterRequest request, UriComponentsBuilder ucb) {
+    public ResponseEntity<SignUpResponse> register(RegisterRequest request) {
         if (!isValidUserName(request.getName())){
             throw new IllegalArgumentException("User name should contain only alphabetic characters");
         }
@@ -75,14 +74,11 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(creator);
         var refreshToken = jwtService.generateToken(creator);
         saveCreatorToken(savedCreator, jwtToken);
-        URI locationOfNewCreator = ucb
-                .path("creator/account/{id}")
-                .buildAndExpand(savedCreator.getId())
-                .toUri();
-        return ResponseEntity.created(locationOfNewCreator).build();
+        SignUpResponse response = new SignUpResponse(jwtToken, refreshToken, savedCreator);
+        return ResponseEntity.status(201).body(response);
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public SignUpResponse authenticate(AuthenticationRequest request) {
         try {
             authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -99,7 +95,7 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(creator);
         revokeAllCreatorTokens(creator);
         saveCreatorToken(creator, jwtToken);
-        return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken)
+        return SignUpResponse.builder().accessToken(jwtToken).refreshToken(refreshToken)
                 .build();
     }
 
@@ -142,7 +138,7 @@ public class AuthenticationService {
                 var accessToken = jwtService.generateToken(creator);
                 revokeAllCreatorTokens(creator);
                 saveCreatorToken(creator, accessToken);
-                var authResponse = AuthenticationResponse.builder()
+                var authResponse = SignUpResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
                         .build();
@@ -177,22 +173,14 @@ public class AuthenticationService {
             return false;
         }
 
-        if (!patternForDigits.matcher(password).find()){
-            return false;
-        }
-
-        return true;
+        return patternForDigits.matcher(password).find();
     }
 
     private boolean isValidUserName(String userName){
         if (patternForDigits.matcher(userName).find()){
             return false;
         }
-        if (patternForSpecialChars.matcher(userName).find()){
-            return false;
-        }
-
-        return true;
+        return !patternForUserName.matcher(userName).find();
     }
 
     private boolean isValidPhotoPath(String photoPath){
@@ -203,12 +191,7 @@ public class AuthenticationService {
             return false;
         }
 
-        if (!isValidImageExtension(userImageExtension)){
-            return false;
-        }
-
-
-        return true;
+        return isValidImageExtension(userImageExtension);
     }
 
 
