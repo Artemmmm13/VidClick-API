@@ -61,6 +61,8 @@ public class FundraisingOfferController {
         return ResponseEntity.notFound().build();
     }
 
+    // comment
+
     @PostMapping("/create")
     private ResponseEntity<FundraisingOffer> createFundraisingOffer(@RequestBody CreateFundraisingOfferRequest createFundraisingOfferRequest
             ,UriComponentsBuilder ucb){
