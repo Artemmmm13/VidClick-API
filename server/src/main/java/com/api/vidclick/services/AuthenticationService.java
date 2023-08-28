@@ -16,12 +16,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.regex.Pattern;
-
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,9 +41,8 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
 
     private final Pattern patternForWhiteSpaces = Pattern.compile("\\s");
-    private final Pattern patternForUserName = Pattern.compile("^[a-zA-Z\\\\s]+$");
     private final Pattern patternForDigits = Pattern.compile("\\d");
-    private final Pattern patternForSpecialChars = Pattern.compile("[^a-zA-Z0-9\\\\s]");
+    private final Pattern patternForSpecialChars = Pattern.compile("[^a-zA-Z0-9\\s]");
 
     public ResponseEntity<SignUpResponse> register(RegisterRequest request) {
         if (!isValidUserName(request.getName())){
@@ -63,6 +61,9 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Provided file is either not a photo or it doesn't exist");
         }
 
+        if (repository.existsByEmail(request.getEmail())){
+            throw new IllegalArgumentException("User with provided email already exists");
+        }
 
         var creator = Creator.builder()
                 .name(request.getName())
@@ -80,27 +81,26 @@ public class AuthenticationService {
     }
 
     public ResponseEntity<LoginResponse> authenticate(AuthenticationRequest request) {
-        if (!isValidUserName(request.getUserName())){
-            throw new IllegalArgumentException("User name should contain only alphabetic characters or spaces");
+        if (!isValidEmail(request.getEmail())){
+            throw new IllegalArgumentException("Provided email does not align with pattern for emails");
         }
 
         if (!isValidPassword(request.getPassword())){
             throw new IllegalArgumentException("The provided password doesn't meet our security requirements");
         }
 
-        try {
-            authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getUserName(),
-                            request.getPassword()
-                    )
-            );
-        } catch (Exception e) {
-            throw new RuntimeException("Authentication failed: " + e.getMessage(), e);
+        if (!repository.existsByEmail(request.getEmail())){
+            throw new IllegalArgumentException("User with the provided email doesn't exist");
         }
 
-        var creator = repository.findByName(request.getUserName())
-                .orElseThrow(()-> new NoSuchElementException("User with such name doesn't exist"));
+        var creator = repository.findByEmail(request.getEmail()).orElseThrow(()->
+                new NoSuchElementException("User doesn't exist"));
+
+
+        if (!passwordEncoder.matches(request.getPassword(), creator.getPassword())){
+            throw new IllegalArgumentException("Incorrect password");
+        }
+
         var jwtToken = jwtService.generateToken(creator);
         var refreshToken = jwtService.generateRefreshToken(creator);
         revokeAllCreatorTokens(creator);
@@ -135,7 +135,7 @@ public class AuthenticationService {
         final String refreshToken;
         final String userEmail;
 
-        if (authHeader == null || !authHeader.startsWith("Beaver ")) return;
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) return;
 
         refreshToken = authHeader.substring(7);
         userEmail = jwtService.extractUsername(refreshToken);
@@ -189,7 +189,7 @@ public class AuthenticationService {
         if (patternForDigits.matcher(userName).find()){
             return false;
         }
-        return !patternForUserName.matcher(userName).find();
+        return !patternForSpecialChars.matcher(userName).find();
     }
 
     private boolean isValidPhotoPath(String photoPath){
