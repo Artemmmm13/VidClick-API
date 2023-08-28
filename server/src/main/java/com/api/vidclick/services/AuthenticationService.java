@@ -16,12 +16,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.regex.Pattern;
-
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -90,19 +89,18 @@ public class AuthenticationService {
             throw new IllegalArgumentException("The provided password doesn't meet our security requirements");
         }
 
-        try {
-            authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
-                            request.getPassword()
-                    )
-            );
-        } catch (Exception e) {
-            throw new RuntimeException("Authentication failed: " + e.getMessage(), e);
+        if (!repository.existsByEmail(request.getEmail())){
+            throw new IllegalArgumentException("User with the provided email doesn't exist");
         }
 
-        var creator = repository.findByEmail(request.getEmail())
-                .orElseThrow(()-> new NoSuchElementException("User with such email doesn't exist"));
+        var creator = repository.findByEmail(request.getEmail()).orElseThrow(()->
+                new NoSuchElementException("User doesn't exist"));
+
+
+        if (!passwordEncoder.matches(request.getPassword(), creator.getPassword())){
+            throw new IllegalArgumentException("Incorrect password");
+        }
+
         var jwtToken = jwtService.generateToken(creator);
         var refreshToken = jwtService.generateRefreshToken(creator);
         revokeAllCreatorTokens(creator);
