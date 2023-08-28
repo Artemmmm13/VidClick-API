@@ -26,7 +26,7 @@ public class CreatorController{
     private final UpdateCreatorProfileService updateService;
 
     @GetMapping("/{requestedId}")
-    public ResponseEntity<Creator> getCreatorById(@PathVariable Long requestedId){ // todo (dont return pswrd)
+    public ResponseEntity<Creator> getCreatorById(@PathVariable Long requestedId){
         if (repository.existsById(requestedId)){
             Creator creator = repository.findById(requestedId).orElseThrow(
                     ()-> new NoSuchElementException("The user with the given Id doesn't exist"));
