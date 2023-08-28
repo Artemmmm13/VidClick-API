@@ -17,5 +17,5 @@ public class SignUpResponse {
     @JsonProperty("refresh_token")
     private String refreshToken;
     @JsonProperty("new_creator")
-    private CreatorAsJsonResponse creator;
+    private Creator creator;
 }

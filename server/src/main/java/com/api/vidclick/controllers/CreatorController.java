@@ -1,6 +1,5 @@
 package com.api.vidclick.controllers;
 
-import com.api.vidclick.DTO.CreatorAsJsonResponse;
 import com.api.vidclick.DTO.UpdateCreatorInfoRequest;
 import com.api.vidclick.models.Creator;
 import com.api.vidclick.repositories.CreatorRepository;
@@ -14,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 
 @RestController
 @RequestMapping("/api/creator")
@@ -25,14 +26,11 @@ public class CreatorController{
     private final UpdateCreatorProfileService updateService;
 
     @GetMapping("/{requestedId}")
-    public ResponseEntity<CreatorAsJsonResponse> getCreatorById(@PathVariable Long requestedId){
+    public ResponseEntity<Creator> getCreatorById(@PathVariable Long requestedId){ // todo (dont return pswrd)
         if (repository.existsById(requestedId)){
-            Creator requestedCreator = repository.findById(requestedId).orElseThrow(()->
-                    new IllegalArgumentException("Creator with the given Id doesn't exist"));
-            CreatorAsJsonResponse jsonResponse = new CreatorAsJsonResponse(requestedCreator.getId(),
-                    requestedCreator.getName(), requestedCreator.getPassword(),
-                    requestedCreator.getEmail(), requestedCreator.getCreatorProfileImage());
-            return ResponseEntity.status(200).body(jsonResponse);
+            Creator creator = repository.findById(requestedId).orElseThrow(
+                    ()-> new NoSuchElementException("The user with the given Id doesn't exist"));
+            return ResponseEntity.ok(creator);
         }
         return ResponseEntity.notFound().build();
     }
@@ -42,7 +40,7 @@ public class CreatorController{
         authService.refreshToken(request, response);
     }
 
-    @PutMapping("/edit-profile/{requestedId}")
+    @PutMapping("/edit-profile/{requestedId}") // todo (exclude all sensitive data)
     private ResponseEntity<Void> updateCreatorAccountInfo(@PathVariable Long requestedId
             , @RequestBody UpdateCreatorInfoRequest updateCreatorInfoRequest){
 
