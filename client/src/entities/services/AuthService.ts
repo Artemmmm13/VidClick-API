@@ -6,11 +6,11 @@ import {ISignupRequest} from "../../shared/models/ISignupRequest.ts";
 
 export default class AuthService {
     static async login(data: ILoginRequest): Promise<AxiosResponse<IAuthResponse>> {
-        return $api.post<IAuthResponse>('/creator/login', {...data})
+        return $api.post<IAuthResponse>('/api/login', {...data})
     }
 
     static async signup(data: ISignupRequest){
-        return $api.post<IAuthResponse>('/creator/signup', {...data})
+        return $api.post<IAuthResponse>('/api/signup', {...data})
     }
 
     static async logout(): Promise<void> {
