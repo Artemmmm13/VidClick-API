@@ -1,9 +1,6 @@
 package com.api.vidclick.services;
 
-import com.api.vidclick.DTO.AuthenticationRequest;
-import com.api.vidclick.DTO.LoginResponse;
-import com.api.vidclick.DTO.SignUpResponse;
-import com.api.vidclick.DTO.RegisterRequest;
+import com.api.vidclick.DTO.*;
 import com.api.vidclick.models.Creator;
 import com.api.vidclick.models.Role;
 import com.api.vidclick.repositories.CreatorRepository;
@@ -76,7 +73,9 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(creator);
         var refreshToken = jwtService.generateToken(creator);
         saveCreatorToken(savedCreator, jwtToken);
-        SignUpResponse response = new SignUpResponse(jwtToken, refreshToken, savedCreator);
+        CreatorAsJsonResponse creatorAsJsonResponse = new CreatorAsJsonResponse(savedCreator.getId(), savedCreator.getName(),
+                savedCreator.getPassword(), savedCreator.getEmail(), savedCreator.getCreatorProfileImage());
+        SignUpResponse response = new SignUpResponse(jwtToken, refreshToken, creatorAsJsonResponse);
         return ResponseEntity.status(201).body(response);
     }
 
