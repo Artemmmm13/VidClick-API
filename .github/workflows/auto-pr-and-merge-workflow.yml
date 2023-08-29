@@ -12,13 +12,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: extract git commit data
-        uses: Artemmmm13/git-commit-data-action@v1.x
+        uses: Artem664/git-commit-data-action@v1.x
 
       - name: Update author information
         run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} -> AUTHOR
 
       - name: Create Pull Request
-        uses: Artemmmm13/create-pull-request@v3
+        uses: Artem66413/create-pull-request@v3
         with:
           branch: "*"
           base: main
@@ -29,13 +29,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
       - name: Approve Pull Request
-        uses: Artemmmm13/approve-pull-requests-action@v1
+        uses: Artem66413/approve-pull-requests-action@v1
         with:
           github-token: ${{ secrets.REPO_SECRET }}
           number: ${{ steps.demo-1.outputs.pull-request-number }}
 
       - name: Merge Pull Request
-        uses: Artemmmm13/merge-pull-request-action@v1
+        uses: Artem664/merge-pull-request-action@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ steps.demo-1.outputs.pull-request-number }}
