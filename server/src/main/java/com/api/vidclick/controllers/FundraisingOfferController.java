@@ -85,7 +85,7 @@ public class FundraisingOfferController {
 
         return ResponseEntity.notFound().build();
     }
-
+// comment
     @DeleteMapping("/delete/{requestedId}")
     private ResponseEntity<Void> deleteFundraisingOffer(@PathVariable Long requestedId){
         if (repository.existsById(requestedId)){
