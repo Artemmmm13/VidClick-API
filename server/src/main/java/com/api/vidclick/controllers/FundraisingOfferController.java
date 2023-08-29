@@ -1,6 +1,7 @@
 package com.api.vidclick.controllers;
 
 import com.api.vidclick.DTO.CreateFundraisingOfferRequest;
+import com.api.vidclick.DTO.FundraisingOfferAsJsonResponse;
 import com.api.vidclick.DTO.UpdateFundraisingOfferRequest;
 import com.api.vidclick.models.FundraisingOffer;
 import com.api.vidclick.repositories.FundraisingOfferRepository;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/fundraising-offers")
@@ -53,10 +54,15 @@ public class FundraisingOfferController {
     }
 
     @GetMapping("/find/{requestedId}")
-    public ResponseEntity<Optional<FundraisingOffer>> getFundraisingOfferById(@PathVariable Long requestedId){
+    public ResponseEntity<FundraisingOfferAsJsonResponse> getFundraisingOfferById(@PathVariable Long requestedId){
         if (repository.existsById(requestedId)){
-            Optional<FundraisingOffer> offer = repository.findById(requestedId);
-            return ResponseEntity.ok(offer);
+            FundraisingOffer offer = repository.findById(requestedId).orElseThrow(
+                    ()->new NoSuchElementException("The offer with the given id doesn't exist"));
+
+            FundraisingOfferAsJsonResponse offerAsJsonResponse = new FundraisingOfferAsJsonResponse(offer.getCreatorId().getId(),
+                    offer.getId(), offer.getTitle(), offer.getDescription(), List.of(offer.getPicturesOfFundraisingOffer().toString()),
+                    offer.getAmount(), offer.getLinkToBankAccount(), offer.getOfferCreatedOn());
+            return ResponseEntity.status(200).body(offerAsJsonResponse);
         }
         return ResponseEntity.notFound().build();
     }
