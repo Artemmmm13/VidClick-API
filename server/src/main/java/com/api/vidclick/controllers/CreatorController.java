@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/creator")
 @RequiredArgsConstructor
 public class CreatorController{
