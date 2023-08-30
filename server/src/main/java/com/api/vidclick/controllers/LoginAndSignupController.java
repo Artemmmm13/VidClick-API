@@ -30,9 +30,9 @@ public class LoginAndSignupController {
     }
 
     @PostMapping("/login")
-    private ResponseEntity<?> authenticateRequest(@RequestBody AuthenticationRequest request){
+    private ResponseEntity<?> authenticateRequest(@RequestBody AuthenticationRequest request, HttpServletResponse response){
         try{
-            return authService.authenticate(request);
+            return authService.authenticate(request, response);
         } catch (Exception e){
             return ResponseEntity.status(400).body(new ErrorMessageResponse(e.getMessage()));
         }
