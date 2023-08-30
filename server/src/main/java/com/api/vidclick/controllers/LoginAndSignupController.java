@@ -4,6 +4,7 @@ import com.api.vidclick.DTO.AuthenticationRequest;
 import com.api.vidclick.DTO.ErrorMessageResponse;
 import com.api.vidclick.DTO.RegisterRequest;
 import com.api.vidclick.services.AuthenticationService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,9 +21,9 @@ public class LoginAndSignupController {
     }
 
     @PostMapping("/signup")
-    private ResponseEntity<?> registerUser(@RequestBody RegisterRequest request){
+    private ResponseEntity<?> registerUser(@RequestBody RegisterRequest request, HttpServletResponse response){
         try {
-            return authService.register(request);
+            return authService.register(request, response);
         } catch (IllegalArgumentException e) {
            return ResponseEntity.status(400).body(new ErrorMessageResponse(e.getMessage()));
         }
