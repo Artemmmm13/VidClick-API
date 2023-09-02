@@ -1,9 +1,6 @@
 package com.api.vidclick.services;
 
-import com.api.vidclick.DTO.AuthenticationRequest;
-import com.api.vidclick.DTO.LoginResponse;
-import com.api.vidclick.DTO.SignUpResponse;
-import com.api.vidclick.DTO.RegisterRequest;
+import com.api.vidclick.DTO.*;
 import com.api.vidclick.models.Creator;
 import com.api.vidclick.models.Role;
 import com.api.vidclick.repositories.CreatorRepository;
@@ -11,16 +8,15 @@ import com.api.vidclick.token.Token;
 import com.api.vidclick.repositories.TokenRepository;
 import com.api.vidclick.token.TokenType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,14 +33,13 @@ public class AuthenticationService {
     private final CreatorRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final AuthenticationManager authManager;
     private final TokenRepository tokenRepository;
 
     private final Pattern patternForWhiteSpaces = Pattern.compile("\\s");
     private final Pattern patternForDigits = Pattern.compile("\\d");
     private final Pattern patternForSpecialChars = Pattern.compile("[^a-zA-Z0-9\\s]");
 
-    public ResponseEntity<SignUpResponse> register(RegisterRequest request) {
+    public ResponseEntity<SignUpResponse> register(RegisterRequest request, HttpServletResponse response) {
         if (!isValidUserName(request.getName())){
             throw new IllegalArgumentException("User name should contain only alphabetic characters");
         }
@@ -76,11 +71,17 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(creator);
         var refreshToken = jwtService.generateToken(creator);
         saveCreatorToken(savedCreator, jwtToken);
-        SignUpResponse response = new SignUpResponse(jwtToken, refreshToken, savedCreator);
-        return ResponseEntity.status(201).body(response);
+        Cookie cookie = new Cookie("user_session", refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(60*60*24);
+        response.addCookie(cookie);
+        CreatorAsJsonResponse creatorAsJsonResponse = new CreatorAsJsonResponse(savedCreator.getId(), savedCreator.getName(),
+                savedCreator.getPassword(), savedCreator.getEmail(), savedCreator.getCreatorProfileImage());
+        SignUpResponse jsonResponse = new SignUpResponse(jwtToken, refreshToken, creatorAsJsonResponse);
+        return ResponseEntity.status(201).body(jsonResponse);
     }
 
-    public ResponseEntity<LoginResponse> authenticate(AuthenticationRequest request) {
+    public ResponseEntity<LoginResponse> authenticate(AuthenticationRequest request, HttpServletResponse response) {
         if (!isValidEmail(request.getEmail())){
             throw new IllegalArgumentException("Provided email does not align with pattern for emails");
         }
@@ -105,6 +106,10 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(creator);
         revokeAllCreatorTokens(creator);
         saveCreatorToken(creator, jwtToken);
+        Cookie cookie = new Cookie("auth_session", refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(60*60*24);
+        response.addCookie(cookie);
         return ResponseEntity.status(200).body(new LoginResponse(jwtToken, refreshToken));
     }
 

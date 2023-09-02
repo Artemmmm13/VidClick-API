@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/fundraising-offers")
 public class FundraisingOfferController {
     private final FundraisingOfferRepository repository;

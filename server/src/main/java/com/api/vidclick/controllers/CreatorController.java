@@ -17,6 +17,7 @@ import java.util.NoSuchElementException;
 
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/creator")
 @RequiredArgsConstructor
 public class CreatorController{
