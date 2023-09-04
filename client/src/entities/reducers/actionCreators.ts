@@ -5,9 +5,8 @@ import {ISignupRequest} from "../../shared/models/ISignupRequest.ts";
 import axios from "axios";
 import {IAuthResponse} from "../../shared/models/IAuthResponse.ts";
 import {API_URL} from "../../shared/http";
-
 export const loginUser = createAsyncThunk(
-    'user/login',
+    'user/register',
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (data: ILoginRequest, thunkAPI) => {
         try {
