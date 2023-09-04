@@ -81,7 +81,7 @@ public class AuthenticationService {
         return ResponseEntity.status(201).body(jsonResponse);
     }
 
-    public ResponseEntity<LoginResponse> authenticate(AuthenticationRequest request, HttpServletResponse response) {
+    public ResponseEntity<LoginResponse> authenticate(HttpServletRequest httpServletRequest,AuthenticationRequest request, HttpServletResponse response) {
         if (!isValidEmail(request.getEmail())){
             throw new IllegalArgumentException("Provided email does not align with pattern for emails");
         }
@@ -106,10 +106,8 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(creator);
         revokeAllCreatorTokens(creator);
         saveCreatorToken(creator, jwtToken);
-        Cookie cookie = new Cookie("auth_session", refreshToken);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(60*60*24);
-        response.addCookie(cookie);
+        Cookie[] userCookies = httpServletRequest.getCookies();
+        userCookies[0].setValue(refreshToken);
         return ResponseEntity.status(200).body(new LoginResponse(jwtToken, refreshToken));
     }
 
@@ -139,6 +137,7 @@ public class AuthenticationService {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
+        final Cookie[] cookie = request.getCookies();
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) return;
 

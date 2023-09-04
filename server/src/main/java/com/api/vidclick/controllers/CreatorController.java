@@ -1,12 +1,14 @@
 package com.api.vidclick.controllers;
 
 import com.api.vidclick.DTO.CreatorAsJsonResponse;
+import com.api.vidclick.DTO.ErrorMessageResponse;
 import com.api.vidclick.DTO.UpdateCreatorInfoRequest;
 import com.api.vidclick.models.Creator;
 import com.api.vidclick.repositories.CreatorRepository;
 import java.io.IOException;
 
 import com.api.vidclick.services.AuthenticationService;
+import com.api.vidclick.services.LogoutService;
 import com.api.vidclick.services.UpdateCreatorProfileService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +25,7 @@ public class CreatorController{
 
     private final AuthenticationService authService;
     private final CreatorRepository repository;
+    private final LogoutService logoutService;
     private final UpdateCreatorProfileService updateService;
 
     @GetMapping("/{requestedId}")
@@ -53,6 +56,17 @@ public class CreatorController{
         }
         return ResponseEntity.notFound().build();
     }
+
+
+    @PostMapping("/logout")
+    private ResponseEntity<?> logout(HttpServletRequest request){
+        try{
+            return logoutService.logout(request);
+        } catch (Exception e){
+            return ResponseEntity.status(400).body(new ErrorMessageResponse(e.getMessage()));
+        }
+    }
+
 
 }
 
