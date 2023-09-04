@@ -9,6 +9,7 @@ import {RegistrationPage} from "../../../pages/RegistrationPage/RegistrationPage
 import {LoginPage} from "../../../pages/LoginPage";
 import {CreatorProfileSettings} from "../../../pages/CreatorProfile/Settings";
 import {CreatorProfileStatistics} from "../../../pages/CreatorProfile/Statistics";
+import {ProfileNavigation} from "../../../features/ProfileNavigation";
 
 export const router = createBrowserRouter([
         {
@@ -30,16 +31,22 @@ export const router = createBrowserRouter([
                 },
                 {
                     path: "/profile",
-                    element: <CreatorProfile/>,
+                    element: <ProfileNavigation/>,
+                    children: [
+                        {
+                            path: "",
+                            element: <CreatorProfile/>
+                        },
+                        {
+                            path: "settings",
+                            element: <CreatorProfileSettings/>
+                        },
+                        {
+                            path: "statistics",
+                            element: <CreatorProfileStatistics/>
+                        }
+                    ]
                 },
-                {
-                    path: "/profile/settings",
-                    element: <CreatorProfileSettings/>
-                },
-                {
-                    path: "/profile/statistics",
-                    element: <CreatorProfileStatistics/>
-                }
             ]
         },
         {
