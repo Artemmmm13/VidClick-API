@@ -1,39 +1,46 @@
 package com.api.vidclick.services;
 
+import com.api.vidclick.DTO.LogoutResponse;
+import com.api.vidclick.models.Creator;
+import com.api.vidclick.repositories.CreatorRepository;
 import com.api.vidclick.repositories.TokenRepository;
+import com.api.vidclick.token.Token;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.boot.autoconfigure.data.cassandra.CassandraRepositoriesAutoConfiguration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+
 
 @Service
 @RequiredArgsConstructor
 public class LogoutService {
     private final TokenRepository repository;
+    private final CreatorRepository creatorRepository;
 
-    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication auth){
 
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
+    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request){
+        Cookie[] userCookies = request.getCookies();
+        String userToken = userCookies[0].getValue();
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")){
-            return;
+        Long creatorId = repository.findByToken(userToken).orElseThrow(
+                ()-> new NoSuchElementException("Such refresh token doesn't exist"));
+
+        Creator creator = creatorRepository.findById(creatorId).orElseThrow(
+                ()-> new NoSuchElementException("User with such refresh token doesn't exist"));
+
+        List<Token> allCreatorTokens = repository.findAllValidTokenByCreator(creatorId);
+
+        for (Token token: allCreatorTokens){
+            token.setExpired(true);
+            token.setRevoked(true);
+            token.setToken("");
         }
 
-        jwt = authHeader.substring(7);
-        var storedToken = repository.findByToken(jwt).orElseThrow(()->
-                new NoSuchElementException("Logout operation is not possible"));
-        if (storedToken!=null){
-            storedToken.setExpired(true);
-            storedToken.setRevoked(true);
-            repository.save(storedToken);
-            SecurityContextHolder.clearContext();
-        }
-
-
+        return ResponseEntity.status(200).body(new LogoutResponse(true));
     }
 }

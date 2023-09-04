@@ -4,6 +4,7 @@ import com.api.vidclick.DTO.AuthenticationRequest;
 import com.api.vidclick.DTO.ErrorMessageResponse;
 import com.api.vidclick.DTO.RegisterRequest;
 import com.api.vidclick.services.AuthenticationService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +29,10 @@ public class LoginAndSignupController {
     }
 
     @PostMapping("/login")
-    private ResponseEntity<?> authenticateRequest(@RequestBody AuthenticationRequest request, HttpServletResponse response){
+    private ResponseEntity<?> authenticateRequest(@RequestBody AuthenticationRequest request,
+                                                  HttpServletRequest httpServletRequest, HttpServletResponse response){
         try{
-            return authService.authenticate(request, response);
+            return authService.authenticate(httpServletRequest,request, response);
         } catch (Exception e){
             return ResponseEntity.status(400).body(new ErrorMessageResponse(e.getMessage()));
         }
