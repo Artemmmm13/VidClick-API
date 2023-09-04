@@ -20,18 +20,19 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class LogoutService {
     private final TokenRepository repository;
-    private final CreatorRepository creatorRepository;
 
 
     public ResponseEntity<LogoutResponse> logout(HttpServletRequest request){
         Cookie[] userCookies = request.getCookies();
         String userToken = userCookies[0].getValue();
 
-        Long creatorId = repository.findByToken(userToken).orElseThrow(
-                ()-> new NoSuchElementException("Such refresh token doesn't exist"));
+        Long creatorTokenId = repository.findByToken(userToken).orElseThrow(
+                ()->new NoSuchElementException("The given token doesn't exist"));
 
-        Creator creator = creatorRepository.findById(creatorId).orElseThrow(
-                ()-> new NoSuchElementException("User with such refresh token doesn't exist"));
+        Token creatorToken = repository.findById(creatorTokenId).orElseThrow(
+                ()->new NoSuchElementException("Given token id doesn't exist"));
+
+        Long creatorId = creatorToken.getCreator().getId();
 
         List<Token> allCreatorTokens = repository.findAllValidTokenByCreator(creatorId);
 
@@ -39,6 +40,7 @@ public class LogoutService {
             token.setExpired(true);
             token.setRevoked(true);
             token.setToken("");
+            repository.save(token);
         }
 
         return ResponseEntity.status(200).body(new LogoutResponse(true));
