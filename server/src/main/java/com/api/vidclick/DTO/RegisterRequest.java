@@ -1,6 +1,8 @@
 package com.api.vidclick.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Data
@@ -10,5 +12,4 @@ public class RegisterRequest {
     private String password;
     private String email;
     private String creatorProfileImage;
-
 }

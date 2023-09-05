@@ -81,7 +81,7 @@ public class AuthenticationService {
         return ResponseEntity.status(201).body(jsonResponse);
     }
 
-    public ResponseEntity<LoginResponse> authenticate(HttpServletRequest httpServletRequest,AuthenticationRequest request, HttpServletResponse response) {
+    public ResponseEntity<LoginResponse> authenticate(HttpServletRequest httpServletRequest,AuthenticationRequest request) {
         if (!isValidEmail(request.getEmail())){
             throw new IllegalArgumentException("Provided email does not align with pattern for emails");
         }
