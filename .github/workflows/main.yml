@@ -15,8 +15,10 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build
       run: mvn compile
+      working-directory: VidClick-API/server
     - name: Run tests
-      run: mvn test   
+      run: mvn test
+      working-directory: VidClick-API/server
 
   
 
