@@ -4,6 +4,25 @@ import styled from "styled-components";
 
 export function ProfileNavigation() {
 
+    const CustomTabsTrigger = styled(Tabs.Trigger)`
+      && {
+        &[data-state='active']::before {
+          background-color: #1B1464;
+        }
+      }
+    `;
+
+    const CustomTabsRoot = styled(Tabs.Root)`
+        && {
+          padding-top: 2em;
+        }
+    `
+    const CustomTabsList = styled(Tabs.List)`
+        && {
+          justify-content: center;
+        }
+    `
+
     const linkStyle = {
         textDecoration: 'none',
         color: 'inherit',
@@ -11,25 +30,28 @@ export function ProfileNavigation() {
 
     return (
         <div>
-            <Tabs.Root defaultValue="account">
-                <Tabs.List>
-                    <Tabs.Trigger value="account">
-                        <Link to={'/profile'} style={linkStyle}>
+            <CustomTabsRoot defaultValue="account">
+                <CustomTabsList>
+                    <CustomTabsTrigger value="account">
+                        <Link to={'/profile'}
+                              style={linkStyle}>
                             Account
                         </Link>
-                    </Tabs.Trigger>
-                    <Tabs.Trigger value="statistics">
-                        <Link to={'./statistics'} style={linkStyle}>
+                    </CustomTabsTrigger>
+                    <CustomTabsTrigger value="statistics">
+                        <Link to={'./statistics'}
+                              style={linkStyle}>
                             Statistics
                         </Link>
-                    </Tabs.Trigger>
-                    <Tabs.Trigger value="settings">
-                        <Link to={'./settings'} style={linkStyle}>
+                    </CustomTabsTrigger>
+                    <CustomTabsTrigger value="settings">
+                        <Link to={'./settings'}
+                              style={linkStyle}>
                             Settings
                         </Link>
-                    </Tabs.Trigger>
-                </Tabs.List>
-            </Tabs.Root>
+                    </CustomTabsTrigger>
+                </CustomTabsList>
+            </CustomTabsRoot>
             <Outlet/>
         </div>
     )
