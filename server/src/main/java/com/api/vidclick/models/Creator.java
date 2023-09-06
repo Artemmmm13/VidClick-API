@@ -28,7 +28,7 @@ public class Creator implements UserDetails {
     private String name;
     private String password;
     private String email;
-    private String creatorProfileImage;
+    private byte[] creatorProfileImage;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "account_created_on")
     private Date accountCreatedOn; // needed to be converted into sql
