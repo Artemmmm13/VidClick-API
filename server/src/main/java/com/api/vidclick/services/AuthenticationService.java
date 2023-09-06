@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
+import java.util.Base64;
 import java.util.regex.Pattern;
 
 import org.springframework.http.ResponseEntity;
@@ -52,8 +53,13 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Provided password does not satisfy our security requirements");
         }
 
-        if (!isValidPhotoPath(request.getCreatorProfileImage())){
+        /*if (!isValidPhotoPath(request.getCreatorProfileImage())){
             throw new IllegalArgumentException("Provided file is either not a photo or it doesn't exist");
+        }*/
+
+        byte[] profilePicture = new byte[0];
+        if (request.getCreatorProfileImage()!=null){
+            profilePicture = Base64.getDecoder().decode(request.getCreatorProfileImage());
         }
 
         if (repository.existsByEmail(request.getEmail())){
@@ -64,7 +70,7 @@ public class AuthenticationService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .creatorProfileImage(request.getCreatorProfileImage())
+                .creatorProfileImage(profilePicture)
                 .role(Role.CREATOR)
                 .build();
         var savedCreator = repository.save(creator);
@@ -76,7 +82,7 @@ public class AuthenticationService {
         cookie.setMaxAge(60*60*24);
         response.addCookie(cookie);
         CreatorAsJsonResponse creatorAsJsonResponse = new CreatorAsJsonResponse(savedCreator.getId(), savedCreator.getName(),
-                savedCreator.getPassword(), savedCreator.getEmail(), savedCreator.getCreatorProfileImage());
+                savedCreator.getPassword(), savedCreator.getEmail(), request.getCreatorProfileImage());
         SignUpResponse jsonResponse = new SignUpResponse(jwtToken, refreshToken, creatorAsJsonResponse);
         return ResponseEntity.status(201).body(jsonResponse);
     }
@@ -137,7 +143,6 @@ public class AuthenticationService {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
-        final Cookie[] cookie = request.getCookies();
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) return;
 
@@ -228,5 +233,28 @@ public class AuthenticationService {
         }
         return false;
     }
+
+    private boolean isValidJPEGFile(String encodedFile){
+        byte[] profilePicture = Base64.getDecoder().decode(encodedFile);
+        return (profilePicture[0] == (byte) 0xFF && profilePicture[1] == (byte) 0xD8);
+    }
+
+    private boolean isValidPNGFile(String encodedFile){
+        byte[] profilePicture = Base64.getDecoder().decode(encodedFile);
+        return profilePicture[0] == (byte) 0x89 && profilePicture[1] == (byte) 0x50 && profilePicture[2] == (byte) 0x4E
+                && profilePicture[3] == (byte) 0x47 && profilePicture[4] == (byte) 0x0D && profilePicture[5] == (byte) 0x0A
+                && profilePicture[6] == (byte) 0x1A && profilePicture[7] == (byte) 0x0A;
+    }
+
+    private boolean isValidJPGFile(String encodedFile){
+        byte[] profilePicture = Base64.getDecoder().decode(encodedFile);
+        return profilePicture[0] == (byte) 0xFF && profilePicture[1] == (byte) 0xD8 && profilePicture[2] == (byte) 0xFF
+                && (profilePicture[3] & 0xE0) == 0xE0;
+    }
+
+    private boolean isValidSVGFile(String encodedFile){
+        return true;//todo
+    }
+
 }
 
