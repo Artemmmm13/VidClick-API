@@ -1,11 +1,9 @@
-import {Avatar, Box, Card, CardContent, Container, Divider, Rating, ThemeProvider, Typography} from "@mui/material";
-import theme from "../../../../app/providers/mui";
+import {Avatar, Box, Card, CardContent, Container, Divider, Rating, Typography} from "@mui/material";
 import {VidclickUiEditButton} from "./VidlickUiEditButton";
 
 
 export function CreatorProfileCard() {
     return (
-        <ThemeProvider theme={theme}>
             <Container maxWidth={"xl"}
                        sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', my: 3}}
                        disableGutters>
@@ -89,6 +87,5 @@ export function CreatorProfileCard() {
                     </CardContent>
                 </Card>
             </Container>
-        </ThemeProvider>
     );
 }
