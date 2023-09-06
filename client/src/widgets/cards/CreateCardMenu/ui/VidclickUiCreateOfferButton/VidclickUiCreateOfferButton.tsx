@@ -37,20 +37,34 @@ export function VidclickUiCreateOfferButton() {
                 <Flex direction="column" gap="3">
                     <label>
                         <Text as="div" size="2" mb="1" weight="bold">
-                            Name
+                            Title
                         </Text>
                         <TextField.Input
-                            defaultValue="Freja Johnsen"
-                            placeholder="Enter your full name"
+                            placeholder="Enter title of a proposal"
                         />
                     </label>
                     <label>
                         <Text as="div" size="2" mb="1" weight="bold">
-                            Email
+                            Description
                         </Text>
                         <TextField.Input
-                            defaultValue="freja@example.com"
-                            placeholder="Enter your email"
+                            placeholder="Enter description of a proposal"
+                        />
+                    </label>
+                    <label>
+                        <Text as="div" size="2" mb="1" weight="bold">
+                            Amount
+                        </Text>
+                        <TextField.Input
+                            placeholder="0€"
+                        />
+                    </label>
+                    <label>
+                        <Text as="div" size="2" mb="1" weight="bold">
+                            Link to bank account
+                        </Text>
+                        <TextField.Input
+                            placeholder="https://monobank.ua"
                         />
                     </label>
                 </Flex>
