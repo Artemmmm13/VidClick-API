@@ -52,7 +52,13 @@ button {
     padding-left: 25px;
     user-select: none;
     outline: none;
+    font-family: Tahoma;
 }
+
+.DropdownMenuItem:nth-child(2){
+    color: red;
+}
+
 .DropdownMenuSubTrigger[data-state='open'] {
     background-color: var(--violet-4);
     color: var(--violet-11);

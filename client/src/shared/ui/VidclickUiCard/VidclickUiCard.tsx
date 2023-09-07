@@ -15,6 +15,8 @@ import * as Progress from '@radix-ui/react-progress';
 import {
     DotsVerticalIcon
 } from '@radix-ui/react-icons';
+import ImageSource from './assets/ePTyZrD_DGc.jpg';
+
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -82,7 +84,7 @@ export function VidclickUiCard() {
                 <CardMedia
                     component="img"
                     height="194"
-                    image="/static/images/cards/paella.jpg"
+                    src={ImageSource}
                     alt="Image"
                 />
                 <CardContent>
