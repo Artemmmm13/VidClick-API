@@ -3,7 +3,8 @@ import {IRegisterValues} from "../../../shared/models/IRegisterValues.ts";
 import {Field, Form, Formik} from "formik";
 import {VidclickUiTextField} from "../../../shared/ui/VidclickUiTextField";
 import {VidclickUiButton} from "../../../shared/ui/VidclickUiButton";
-import {Box, Container, CssBaseline, Grid, ThemeProvider, Typography} from "@mui/material";
+import {Box, Container, CssBaseline, Grid, IconButton, ThemeProvider, Typography} from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import theme from "../../../app/providers/mui";
 import {Link} from "react-router-dom";
 import {VidclickUiCopyright} from "../../../shared/ui/VidclickUiCopyright";
@@ -25,14 +26,14 @@ export function RegistrationForm() {
         confirmPassword: Yup
             .string()
             .required('This field is required.')
-            .oneOf([Yup.ref('password')], 'Your passwords do not match.')
+            .oneOf([Yup.ref('password')], 'Your passwords do not match.'),
     });
 
     const initialValues: IRegisterValues = {
         name: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
     }
 
     const onSubmit = (values: IRegisterValues) => {
@@ -89,6 +90,24 @@ export function RegistrationForm() {
                                                    error={formikProps.touched.email && !!formikProps.errors.email}
                                                    helperText={formikProps.touched.email && formikProps.errors.email}
                                             />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                <Field
+                                                    as={VidclickUiTextField}
+                                                    required
+                                                    fullWidth
+                                                    name="fileInput"
+                                                    label="Upload File"
+                                                    type="file"
+                                                    id="fileInput"
+                                                    // Add error and helperText props as needed
+                                                    style={{ flex: 1 }} // Adjust the width of the input field
+                                                />
+                                                <IconButton component="label" htmlFor="fileInput">
+                                                    <CloudUploadIcon />
+                                                </IconButton>
+                                            </div>
                                         </Grid>
                                         <Grid item
                                               xs={12}>
