@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
-import java.util.Base64;
 import java.util.regex.Pattern;
 
 import org.springframework.http.ResponseEntity;
@@ -24,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.NoSuchElementException;
 
@@ -39,6 +39,7 @@ public class AuthenticationService {
     private final Pattern patternForWhiteSpaces = Pattern.compile("\\s");
     private final Pattern patternForDigits = Pattern.compile("\\d");
     private final Pattern patternForSpecialChars = Pattern.compile("[^a-zA-Z0-9\\s]");
+    private static final long MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
 
     public ResponseEntity<SignUpResponse> register(RegisterRequest request, HttpServletResponse response) {
         if (!isValidUserName(request.getName())){
@@ -53,15 +54,6 @@ public class AuthenticationService {
             throw new IllegalArgumentException("Provided password does not satisfy our security requirements");
         }
 
-        /*if (!isValidPhotoPath(request.getCreatorProfileImage())){
-            throw new IllegalArgumentException("Provided file is either not a photo or it doesn't exist");
-        }*/
-
-        byte[] profilePicture = new byte[0];
-        if (request.getCreatorProfileImage()!=null){
-            profilePicture = Base64.getDecoder().decode(request.getCreatorProfileImage());
-        }
-
         if (repository.existsByEmail(request.getEmail())){
             throw new IllegalArgumentException("User with provided email already exists");
         }
@@ -70,7 +62,7 @@ public class AuthenticationService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .creatorProfileImage(profilePicture)
+                //.creatorProfileImage(userImage)
                 .role(Role.CREATOR)
                 .build();
         var savedCreator = repository.save(creator);
@@ -234,26 +226,65 @@ public class AuthenticationService {
         return false;
     }
 
-    private boolean isValidJPEGFile(String encodedFile){
-        byte[] profilePicture = Base64.getDecoder().decode(encodedFile);
+    private boolean isValidJPEGFile(MultipartFile file){
+        byte[] profilePicture = new byte[0];
+        try {
+            profilePicture = file.getBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return (profilePicture[0] == (byte) 0xFF && profilePicture[1] == (byte) 0xD8);
     }
 
-    private boolean isValidPNGFile(String encodedFile){
-        byte[] profilePicture = Base64.getDecoder().decode(encodedFile);
+    private boolean isValidPNGFile(MultipartFile file){
+        byte[] profilePicture = new byte[0];
+        try {
+            profilePicture = file.getBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return profilePicture[0] == (byte) 0x89 && profilePicture[1] == (byte) 0x50 && profilePicture[2] == (byte) 0x4E
                 && profilePicture[3] == (byte) 0x47 && profilePicture[4] == (byte) 0x0D && profilePicture[5] == (byte) 0x0A
                 && profilePicture[6] == (byte) 0x1A && profilePicture[7] == (byte) 0x0A;
     }
 
-    private boolean isValidJPGFile(String encodedFile){
-        byte[] profilePicture = Base64.getDecoder().decode(encodedFile);
+    private boolean isValidJPGFile(MultipartFile file){
+        byte[] profilePicture = new byte[0];
+        try {
+            profilePicture = file.getBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return profilePicture[0] == (byte) 0xFF && profilePicture[1] == (byte) 0xD8 && profilePicture[2] == (byte) 0xFF
                 && (profilePicture[3] & 0xE0) == 0xE0;
     }
 
-    private boolean isValidSVGFile(String encodedFile){
-        return true;//todo
+
+    private boolean isValidContentType(String contentType){
+        String[] allowedContentTypes = {"image/jpeg", "image/jpg", "image/png"};
+
+        for (String str: allowedContentTypes){
+            if (str.equalsIgnoreCase(contentType)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isValidImageSize(MultipartFile file){
+        return file.getSize() > MAX_FILE_SIZE_BYTES;
+    }
+
+    public boolean isValidPhoto(MultipartFile file){
+        if (!isValidImageSize(file)){
+            return false;
+        }
+
+        if (!isValidContentType(file.getContentType())){
+            return false;
+        }
+
+        return isValidJPEGFile(file) || isValidJPGFile(file) || isValidPNGFile(file);
     }
 
 }
