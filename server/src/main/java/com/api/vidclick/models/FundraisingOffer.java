@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Builder
@@ -22,7 +21,7 @@ public class FundraisingOffer {
     private Long id;
     private String title;
     private String description;
-    private List<String> picturesOfFundraisingOffer;
+    private String picturesOfFundraisingOffer;
     private Integer amount;
     @ManyToOne
     @JoinColumn(name = "creator_id", referencedColumnName = "id")

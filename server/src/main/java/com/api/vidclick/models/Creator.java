@@ -28,10 +28,10 @@ public class Creator implements UserDetails {
     private String name;
     private String password;
     private String email;
-    private byte[] creatorProfileImage;
+    private String creatorProfileImage;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "account_created_on")
-    private Date accountCreatedOn; // needed to be converted into sql
+    private Date accountCreatedOn;
     @Enumerated(EnumType.STRING)
     private Role role;
 

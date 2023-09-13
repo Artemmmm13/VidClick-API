@@ -8,6 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")
@@ -35,6 +39,24 @@ public class LoginAndSignupController {
             return authService.authenticate(httpServletRequest,request);
         } catch (Exception e){
             return ResponseEntity.status(400).body(new ErrorMessageResponse(e.getMessage()));
+        }
+    }
+
+    @PostMapping("/upload-file")
+    private ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        if (authService.isValidPhoto(file) && !file.isEmpty()){
+            String originalFileName = file.getOriginalFilename();
+            File storedFile = new File("/path/to/your/directory/" + originalFileName);
+            try {
+                file.transferTo(storedFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            return ResponseEntity.status(200).body("File uploaded successfully");
+        }
+        else{
+            throw new IOException("Uploaded file is not valid");
         }
     }
 }
