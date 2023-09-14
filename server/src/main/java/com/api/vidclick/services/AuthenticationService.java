@@ -62,7 +62,6 @@ public class AuthenticationService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                //.creatorProfileImage(userImage)
                 .role(Role.CREATOR)
                 .build();
         var savedCreator = repository.save(creator);
@@ -73,9 +72,8 @@ public class AuthenticationService {
         cookie.setHttpOnly(true);
         cookie.setMaxAge(60*60*24);
         response.addCookie(cookie);
-        CreatorAsJsonResponse creatorAsJsonResponse = new CreatorAsJsonResponse(savedCreator.getId(), savedCreator.getName(),
-                savedCreator.getPassword(), savedCreator.getEmail(), request.getCreatorProfileImage());
-        SignUpResponse jsonResponse = new SignUpResponse(jwtToken, refreshToken, creatorAsJsonResponse);
+        RegisterResponse registerResponse = new RegisterResponse(request.getPassword(), request.getName(), request.getEmail());
+        SignUpResponse jsonResponse = new SignUpResponse(jwtToken, refreshToken, registerResponse);
         return ResponseEntity.status(201).body(jsonResponse);
     }
 
@@ -272,7 +270,7 @@ public class AuthenticationService {
     }
 
     private boolean isValidImageSize(MultipartFile file){
-        return file.getSize() > MAX_FILE_SIZE_BYTES;
+        return file.getSize() < MAX_FILE_SIZE_BYTES && !file.isEmpty();
     }
 
     public boolean isValidPhoto(MultipartFile file){

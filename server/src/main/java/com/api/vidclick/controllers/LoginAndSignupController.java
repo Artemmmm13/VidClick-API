@@ -6,6 +6,7 @@ import com.api.vidclick.DTO.RegisterRequest;
 import com.api.vidclick.services.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,9 +45,20 @@ public class LoginAndSignupController {
 
     @PostMapping("/upload-file")
     private ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        if (authService.isValidPhoto(file) && !file.isEmpty()){
+        if (authService.isValidPhoto(file)){
             String originalFileName = file.getOriginalFilename();
-            File storedFile = new File("/path/to/your/directory/" + originalFileName);
+            String projectRootPath = System.getProperty("user.dir");
+            String uploadDirectoryPath = projectRootPath + "/server/src/main/resources/uploads";
+            File directory = new File(uploadDirectoryPath);
+
+            if (!directory.exists()) {
+                if (!directory.mkdirs()) {
+                    throw new RuntimeException("Failed to create directory: " + uploadDirectoryPath);
+                }
+            }
+
+            File storedFile = new File(directory, originalFileName);
+
             try {
                 file.transferTo(storedFile);
             } catch (IOException e) {
@@ -54,9 +66,9 @@ public class LoginAndSignupController {
             }
 
             return ResponseEntity.status(200).body("File uploaded successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while uploading file");
         }
-        else{
-            throw new IOException("Uploaded file is not valid");
-        }
+
     }
 }
