@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.logging.Logger;
 
 @Service
 public class UpdateCreatorProfileService {
@@ -33,7 +34,7 @@ public class UpdateCreatorProfileService {
         if (request.getEmail()!=null && !request.getEmail().isEmpty()){
             creator.setEmail(creator.getEmail());
         }
-        if (request.getCreatorProfileImage()!=null && !request.getCreatorProfileImage().isEmpty()){
+        if (request.getCreatorProfileImage()!=null && !request.getCreatorProfileImage().isEmpty()) {
             creator.setCreatorProfileImage(request.getCreatorProfileImage());
         }
 

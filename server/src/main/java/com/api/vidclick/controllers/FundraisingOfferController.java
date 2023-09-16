@@ -9,6 +9,7 @@ import com.api.vidclick.services.CreateFundraisingOfferService;
 import com.api.vidclick.services.GetFundraisingOffersWithPaginationService;
 import com.api.vidclick.services.GetFundraisingOffersWithSortingService;
 import com.api.vidclick.services.UpdateFundraisingOfferService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
+@Slf4j
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/fundraising-offers")
 public class FundraisingOfferController {

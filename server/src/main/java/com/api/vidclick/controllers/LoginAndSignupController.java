@@ -6,6 +6,7 @@ import com.api.vidclick.DTO.RegisterRequest;
 import com.api.vidclick.services.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 @RestController
+@Slf4j
 @RequestMapping("/api")
 @CrossOrigin(origins = "*")
 public class LoginAndSignupController {
@@ -44,9 +46,13 @@ public class LoginAndSignupController {
     }
 
     @PostMapping("/upload-file")
-    private ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    private ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file){
         if (authService.isValidPhoto(file)){
             String originalFileName = file.getOriginalFilename();
+            assert originalFileName != null;
+            if (originalFileName.isEmpty()){
+                throw new IllegalArgumentException("Provide photo with non empty file name");
+            }
             String projectRootPath = System.getProperty("user.dir");
             String uploadDirectoryPath = projectRootPath + "/server/src/main/resources/uploads";
             File directory = new File(uploadDirectoryPath);
@@ -56,6 +62,7 @@ public class LoginAndSignupController {
                     throw new RuntimeException("Failed to create directory: " + uploadDirectoryPath);
                 }
             }
+
 
             File storedFile = new File(directory, originalFileName);
 

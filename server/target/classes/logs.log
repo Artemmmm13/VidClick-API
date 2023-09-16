@@ -1,0 +1,30 @@
+2023-09-16 22:42:52.869 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2023-09-16 22:42:52.903 [main] INFO  c.api.vidclick.VidClickApplication - Starting VidClickApplication using Java 20.0.2 with PID 14929 (/home/godzilla/Documents/VidClick-API/server/target/classes started by godzilla in /home/godzilla/Documents/VidClick-API)
+2023-09-16 22:42:52.904 [main] INFO  c.api.vidclick.VidClickApplication - No active profile set, falling back to 1 default profile: "default"
+2023-09-16 22:42:53.470 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-09-16 22:42:53.518 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 41 ms. Found 3 JPA repository interfaces.
+2023-09-16 22:42:53.899 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2023-09-16 22:42:53.905 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2023-09-16 22:42:53.906 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2023-09-16 22:42:53.907 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.11]
+2023-09-16 22:42:53.961 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2023-09-16 22:42:53.961 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1018 ms
+2023-09-16 22:42:54.056 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-09-16 22:42:54.108 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.6.Final
+2023-09-16 22:42:54.110 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2023-09-16 22:42:54.218 [main] INFO  o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-09-16 22:42:54.324 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-09-16 22:42:54.337 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2023-09-16 22:42:54.590 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@485451d8
+2023-09-16 22:42:54.592 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2023-09-16 22:42:54.834 [main] INFO  o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2023-09-16 22:42:55.391 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-09-16 22:42:55.462 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-09-16 22:42:55.753 [main] INFO  o.s.d.j.r.q.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2023-09-16 22:42:56.292 [main] INFO  o.s.s.w.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@45a0ba61, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3a69c81e, org.springframework.security.web.context.SecurityContextHolderFilter@8551ee6, org.springframework.security.web.header.HeaderWriterFilter@5280e62e, org.springframework.security.web.authentication.logout.LogoutFilter@c62d08a, com.api.vidclick.securityConfig.JwtAuthenticationFilter@15254569, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7f4f432b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@435b944c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5b2ac349, org.springframework.security.web.session.SessionManagementFilter@13c147f8, org.springframework.security.web.access.ExceptionTranslationFilter@453d2a55, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@79753f20]
+2023-09-16 22:42:56.436 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2023-09-16 22:42:56.446 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2023-09-16 22:42:56.453 [main] INFO  c.api.vidclick.VidClickApplication - Started VidClickApplication in 3.91 seconds (process running for 4.525)
+2023-09-16 22:43:05.296 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-09-16 22:43:05.297 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2023-09-16 22:43:05.303 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
